@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colores Corporativos TLE */
+  --color-tle-primary: #fecf29;
+  --color-tle-secondary: #f6f6f6;
+  --color-tle-accent: #b18f19;
+  --color-tle-black: #000000;
+  --color-tle-white: #ffffff;
+
+  /* Tipografías Modernas de Google Fonts */
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Syne', sans-serif;
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-tle-white text-tle-black antialiased overflow-x-hidden;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold;
+  }
+}
+
+/* --- Animaciones GSAP ---
+   La clase .js-anim la agrega un script inline en el <head> del Layout, y solo
+   si el navegador soporta JS y el usuario NO pidió reducir el movimiento.
+   Así los elementos parten invisibles únicamente cuando GSAP va a animarlos:
+   sin JS, o con "reduce motion", el contenido se ve normal desde el inicio. */
+@layer base {
+  .js-anim [data-reveal],
+  .js-anim [data-reveal-stagger] > * {
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+  .js-anim [data-hero-anim] {
+    opacity: 0;
+  }
+}

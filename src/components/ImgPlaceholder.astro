@@ -1,0 +1,29 @@
+---
+/* Espacio reservado para fotografía. Se ve como un bloque gris rotulado "IMG"
+   para localizar rápido qué imagen falta y con qué proporción debe entregarse.
+   Al sustituirlo, se cambia el componente por un <img> con la misma clase de
+   proporción (`ratio`). */
+interface Props {
+  /** Qué fotografía va aquí. Se muestra dentro del bloque. */
+  nota: string;
+  /** Clase de aspect-ratio de Tailwind. */
+  ratio?: string;
+  /** Clases extra del contenedor. */
+  class?: string;
+  /** Rótulo corto arriba del bloque (ej. "IMG 05"). */
+  id?: string;
+}
+
+const { nota, ratio = 'aspect-4/3', class: clase = '', id } = Astro.props;
+---
+
+<div
+  data-img-placeholder
+  class={`relative ${ratio} w-full bg-gray-200 border border-dashed border-gray-400 flex flex-col items-center justify-center text-center p-4 ${clase}`}
+>
+  <span class="absolute top-2 left-2 bg-gray-700 text-white text-[10px] font-bold tracking-widest px-2 py-1 rounded-sm">
+    {id ? `IMG · ${id}` : 'IMG'}
+  </span>
+  <i class="ph ph-image text-4xl text-gray-500 mb-2"></i>
+  <span class="text-[11px] text-gray-600 leading-snug max-w-[22ch]">{nota}</span>
+</div>

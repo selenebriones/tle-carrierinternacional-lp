@@ -1,0 +1,626 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ImgPlaceholder from '../components/ImgPlaceholder.astro';
+
+/* ============================================================================
+   TLE — LP Carrier Internacional.
+   Misma estructura, tipografía y paleta que la LP Nacional ya autorizada.
+   Los bloques grises rotulados "IMG" marcan dónde entra fotografía definitiva.
+   ========================================================================== */
+
+const certificaciones = [
+  { img: '/images/tle-certificaciones-03.webp', nombre: 'Certificación CTPAT', alto: 'h-[3.6rem]',
+    copy: 'Estándares superiores de seguridad transfronteriza y criterios de Trusted Trader supply chain México.' },
+  { img: '/images/tle-certificaciones-02.webp', nombre: 'ISO 9001:2015', alto: 'h-24',
+    copy: 'Procesos de gestión logísticos estandarizados, auditados y orientados a la mejora continua.' },
+];
+
+// Va en una sola línea horizontal. El marcador de posición admite icono o imagen.
+const respaldo = [
+  { icon: 'ph-handshake', titulo: 'Sinergia TLE + D-Troy',
+    copy: 'Coordinación directa y sin intermediarios para asegurar la fluidez del flete transfronterizo.' },
+  { icon: 'ph-broadcast', titulo: 'Trazabilidad Continua',
+    copy: 'Visibilidad end-to-end y monitoreo constante de la mercancía sin perder el rastreo en el cruce de frontera.' },
+  { icon: 'ph-buildings', titulo: 'Respaldo Grupo ATC',
+    copy: 'Solidez operativa y financiera que respalda el transporte para empresas de nearshoring e industrias clave.' },
+];
+
+// Pares reto → solución. Se leen en contraste, uno frente al otro.
+const integracion = [
+  {
+    dolor: 'Fragmentación de Proveedores: pérdida de claridad al cambiar de responsable en frontera.',
+    solucion: 'Un Solo Canal de Coordinación: operación unificada para eliminar intermediarios como tu proveedor logístico de comercio exterior.',
+  },
+  {
+    dolor: 'Falta de Estandarización: retrasos e incertidumbre por falta de comunicación clara.',
+    solucion: 'Trazabilidad Continua: control operativo total y monitoreo constante en cada etapa del trayecto.',
+  },
+  {
+    dolor: 'Riesgos Operativos: incertidumbre sobre el estatus real de la carga en el cruce.',
+    solucion: 'Protocolos de Seguridad Binacional: procesos enfocados en la protección y cumplimiento puntual de tus entregas.',
+  },
+];
+
+// Tres tarjetas interconectadas con flujo central: TLE → Cruce Coordinado → D-Troy.
+const solucion = [
+  {
+    icon: 'ph-truck',
+    titulo: 'TLE (Gestión en México)',
+    foto: '/images/tle-unidades-03.webp',
+    alt: 'Full TLE en carretera dentro de México',
+    copy: 'Solidez operativa e infraestructura estratégica en los principales corredores industriales del país. Como freight forwarder en México, gestionamos la recolección, resguardo y logística de origen con el respaldo institucional de Grupo ATC.',
+  },
+  {
+    icon: 'ph-arrows-left-right',
+    titulo: 'Cruce Coordinado (Integración Binacional)',
+    img: 'Maniobra de cruce en puente internacional',
+    copy: 'Continuidad operacional entre ambos países bajo un solo estándar de trazabilidad y control. Centralizamos la comunicación para asegurar el flujo constante de tu mercancía en frontera.',
+  },
+  {
+    icon: 'ph-flag',
+    titulo: 'D-Troy (Distribución en EE. UU.)',
+    foto: '/images/tle-unidades-01.webp',
+    alt: 'Tractocamión TLE con caja seca en ruta hacia Estados Unidos',
+    copy: 'Capacidad operativa y presencia estratégica en nodos clave en Estados Unidos para garantizar el traslado final sin fricciones de tu caja seca crossborder y carga especializada.',
+  },
+];
+
+const coberturaMx = [
+  'HQ Monterrey', 'Salinas Victoria', 'Nuevo Laredo', 'Ramos Arizpe', 'San Luis Potosí',
+  'Silao', 'Salamanca', 'Manzanillo', 'Lázaro Cárdenas', 'Altamira',
+];
+
+const proceso = [
+  { n: '01', titulo: 'Entendemos y Diagnosticamos tu Operación',
+    copy: 'Evaluamos origen, destino, tipo de mercancía y requerimientos específicos para el cruce de mercancía en frontera México – EU.',
+    img: 'Reunión de diagnóstico con el cliente' },
+  { n: '02', titulo: 'Diseñamos la Solución Coordinada',
+    copy: 'Planificamos la integración logística binacional entre TLE y D-Troy para asegurar continuidad y eficiencia.',
+    img: 'Planeación de ruta binacional' },
+  { n: '03', titulo: 'Ejecución, Tránsito y Cruce Fronterizo',
+    copy: 'Realizamos el traslado bajo protocolos rigurosos de seguridad para lograr un transporte crossborder sin demoras.',
+    img: 'Unidad cruzando puente internacional' },
+  { n: '04', titulo: 'Trazabilidad Activa y Entrega Final',
+    copy: 'Mantenemos visibilidad completa del estatus en tiempo real hasta la recepción exitosa en destino.',
+    img: 'Entrega en andén de destino' },
+];
+
+const modalidades = [
+  { icon: 'ph-package', titulo: 'Caja Seca Crossborder (Dry Van)', foto: '/images/tle-servicios-tn-01-1.webp', alt: 'Tractocamiones TLE con caja seca en patio',
+    copy: 'Solución eficiente para insumos, mercancía empacada y productos terminados con protección total y trazabilidad en tránsito.' },
+  { icon: 'ph-stack-simple', titulo: 'Plataformas (Flatbed)', foto: '/images/tle-servicios-tn-03.webp', alt: 'Plataforma lowboy con maquinaria pesada',
+    copy: 'Equipos especializados de alta capacidad para carga sobredimensionada, maquinaria e insumos industriales.' },
+  { icon: 'ph-car', titulo: 'Nodrizas (Madrinas)', foto: '/images/tle-servicios-tn-04.webp', alt: 'Nodriza TLE cargada de vehículos',
+    copy: 'Transporte especializado de alta seguridad diseñado para la industria automotriz y el traslado eficiente de vehículos.' },
+  { icon: 'ph-shipping-container', titulo: 'Movimientos Contenerizados', foto: '/images/intermodal.webp', alt: 'Tractocamión TLE con contenedor en patio intermodal',
+    copy: 'Coordinación multimodal para el manejo de contenedores conectados con puertos y corredores estratégicos.' },
+];
+
+const sectores = [
+  { icon: 'ph-car', titulo: 'Automotriz', foto: '/images/nodriza.png', alt: 'Flotilla de nodrizas TLE para la industria automotriz',
+    copy: 'Control de tiempos crítico y trazabilidad activa para garantizar el flujo constante de insumos, previniendo paros de producción en líneas de ensamblaje.' },
+  { icon: 'ph-factory', titulo: 'Manufactura e Industria General', foto: '/images/tle-servicios-tn-02.webp', alt: 'Carga de contenedor TLE con tarimas en nave industrial',
+    copy: 'Soluciones integrales para la importación y exportación de mercancías, optimizando el abastecimiento de materias primas y distribución transfronteriza de producto terminado.' },
+  { icon: 'ph-storefront', titulo: 'Retail y Comercio Mayorista', img: 'Centro de distribución con andenes',
+    copy: 'Capacidad operativa flexible para responder a picos de demanda y asegurar entregas puntuales en redes de distribución nacional e internacional.' },
+];
+
+// Sin repetir certificaciones: solo recursos operativos y tecnológicos.
+const seguridad = [
+  { recurso: 'Monitoreo GPS y Trazabilidad Avanzada',
+    beneficio: 'Visibilidad End-to-End',
+    beneficioDetalle: 'Claridad absoluta del estatus y progreso de tu envío en cada etapa del trayecto.' },
+  { recurso: 'Estrategia Coordinada TLE + D-Troy',
+    beneficio: 'Menos Fragmentación',
+    beneficioDetalle: 'Canal de comunicación único como empresa de logística binacional, con cero triangulación de llamadas con terceros.' },
+  { recurso: 'Control de Servicio Estandarizado',
+    beneficio: 'Certeza Operativa',
+    beneficioDetalle: 'Protocolos estrictos de supervisión para garantizar una alta calidad constante en cada embarque.' },
+];
+
+const modalidadesNombres = modalidades.map((m) => m.titulo);
+---
+
+<Layout
+  title="TLE | Carrier Internacional — Supply Chain México – Estados Unidos"
+  description="Fleteo internacional terrestre México – EE. UU. con una sola coordinación: cruce fronterizo ágil, trazabilidad continua y seguridad certificada de origen a destino final."
+>
+
+  <!-- ===================== 1. HERO ===================== -->
+  <section class="relative w-full min-h-[80vh] flex items-center bg-tle-black text-tle-white overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/25 z-10"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10"></div>
+    <img
+      src="/images/hero_TLE.jpg"
+      alt="Tractocamión TLE en carretera rumbo a la frontera"
+      data-parallax
+      fetchpriority="high"
+      width="800"
+      height="600"
+      class="absolute inset-0 w-full h-full object-cover object-[72%_center] opacity-70 z-0"
+    />
+
+    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full">
+      <span data-hero-anim class="inline-block bg-tle-primary text-tle-black text-xs font-bold uppercase tracking-[0.2em] px-3 py-1 mb-6">
+        Soluciones de Supply Chain Internacional
+      </span>
+      <h1 data-hero-anim class="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold leading-[1.08] mb-6 max-w-4xl uppercase">
+        Cruza la frontera sin perder <span class="text-tle-primary">visibilidad</span> de tu operación
+      </h1>
+      <p data-hero-anim class="text-gray-300 text-base sm:text-lg max-w-3xl mb-4 font-light leading-relaxed">
+        Somos tu aliado integral de la cadena de suministro, gestionamos tu <strong class="font-semibold text-white">flete
+        internacional terrestre México – USA</strong> a través de una empresa de logística binacional coordinada entre
+        TLE y D-Troy. Agilizamos la <strong class="font-semibold text-white">logística para exportación México</strong>
+        con pasos fronterizos en menos de 15 minutos, respaldados por máxima seguridad y trazabilidad en tiempo real.
+      </p>
+      <p data-hero-anim class="text-tle-primary text-sm sm:text-base font-medium max-w-3xl mb-10">
+        Estrategia binacional coordinada. Un mismo enfoque de seguridad y trazabilidad.
+      </p>
+      <div data-hero-anim class="flex flex-col sm:flex-row gap-4">
+        <a href="#contacto" class="bg-tle-primary text-tle-black px-8 py-4 rounded-sm font-bold hover:bg-white transition-all text-center">
+          Cotiza tu operación internacional
+        </a>
+        <a href="#solucion" class="border border-white/40 text-tle-white px-8 py-4 rounded-sm font-bold hover:bg-white/10 transition-all text-center">
+          Ver la solución coordinada
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 2. CERTIFICACIONES ===================== -->
+  <section class="bg-tle-white py-16 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 data-reveal class="text-center text-2xl sm:text-3xl font-display font-bold text-tle-black mb-12 uppercase tracking-wide">
+        Certificaciones de calidad y seguridad
+      </h2>
+      <div data-reveal-stagger class="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-4xl mx-auto text-center">
+        {certificaciones.map((c) => (
+          <div class="flex flex-col items-center">
+            <div class="h-24 flex items-center justify-center mb-4">
+              <img src={c.img} alt={c.nombre} width="240" height="240" loading="lazy" class={`${c.alto} w-auto object-contain`} />
+            </div>
+            <span class="text-sm font-bold text-tle-black">{c.nombre}</span>
+            <p class="text-xs text-gray-600 leading-relaxed mt-2 max-w-xs">{c.copy}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 3. RESPALDO INSTITUCIONAL Y RED BINACIONAL ===================== -->
+  <section class="py-20 bg-tle-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-14">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">
+          Respaldo institucional y red binacional
+        </h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+      </div>
+
+      <div data-reveal-stagger class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-300">
+        {respaldo.map((item) => (
+          <div class="px-8 py-8 md:py-2 text-center flex flex-col items-center">
+            <div class="w-16 h-16 bg-tle-primary flex items-center justify-center rounded-sm mb-5">
+              <i class={`ph ${item.icon} text-3xl text-tle-black`}></i>
+            </div>
+            <h3 class="text-base font-bold text-tle-black mb-3">{item.titulo}</h3>
+            <p class="text-sm text-gray-600 leading-relaxed max-w-xs">{item.copy}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 4. INTEGRACIÓN LOGÍSTICA ===================== -->
+  <section class="py-20 bg-tle-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-14">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">Integración Logística</h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+        <p class="text-sm text-gray-600 max-w-3xl mx-auto mt-6 leading-relaxed">
+          ¿Tu mercancía pierde trazabilidad al llegar a la frontera? Soluciones de Supply Chain
+          diseñadas a la medida de tu negocio.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
+        <h3 data-reveal class="text-lg font-bold text-gray-500 pb-4 border-b-2 border-gray-200">
+          Retos en la Cadena de Suministro
+        </h3>
+        <h3 data-reveal class="text-lg font-bold text-tle-black pb-4 border-b-2 border-tle-primary">
+          Solución de Supply Chain TLE
+        </h3>
+      </div>
+
+      <div class="mt-8 space-y-6">
+        {integracion.map((par) => (
+          <div data-reveal-stagger class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-stretch">
+            <div class="flex gap-4 bg-tle-secondary p-6 rounded-sm">
+              <i class="ph ph-x-circle text-2xl text-gray-400 shrink-0"></i>
+              <p class="text-sm text-gray-600 leading-relaxed">{par.dolor}</p>
+            </div>
+            <div class="flex gap-4 bg-tle-secondary p-6 rounded-sm border-l-4 border-tle-primary">
+              <i class="ph ph-check-circle text-2xl text-tle-accent shrink-0"></i>
+              <p class="text-sm font-medium text-tle-black leading-relaxed">{par.solucion}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div data-reveal class="text-center mt-14">
+        <a href="#contacto" class="inline-flex items-center gap-2 bg-tle-black text-tle-white px-8 py-4 rounded-sm font-bold text-sm hover:bg-tle-primary hover:text-tle-black transition-colors">
+          Hablemos de tu operación internacional <i class="ph ph-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 5. SOLUCIÓN COORDINADA ===================== -->
+  <section id="solucion" class="py-20 bg-tle-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-14">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">Solución Coordinada</h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+        <p class="text-sm text-gray-600 max-w-3xl mx-auto mt-6 leading-relaxed">
+          Control integral de la carga transfronteriza a través de un solo modelo de gestión.
+        </p>
+      </div>
+
+      <div data-reveal-stagger class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {solucion.map((s, i) => (
+          <article class="relative bg-tle-white rounded-sm border-t-2 border-tle-primary overflow-hidden flex flex-col">
+            {/* Flecha del flujo central: TLE → Cruce Coordinado → D-Troy */}
+            {i < solucion.length - 1 && (
+              <span class="hidden md:flex absolute top-1/2 -right-6 z-20 w-9 h-9 -translate-y-1/2 items-center justify-center rounded-full bg-tle-primary text-tle-black" aria-hidden="true">
+                <i class="ph ph-caret-right text-lg"></i>
+              </span>
+            )}
+            {s.foto
+              ? <img src={s.foto} alt={s.alt} width="730" height="456" loading="lazy" class="w-full aspect-16/10 object-cover" />
+              : <ImgPlaceholder id={`SOL-0${i + 1}`} nota={s.img} ratio="aspect-16/10" />}
+            <div class="p-7 flex flex-col grow">
+              <i class={`ph ${s.icon} text-3xl text-tle-accent mb-4 block`}></i>
+              <h3 class="text-base font-bold text-tle-black mb-3">{s.titulo}</h3>
+              <p class="text-xs text-gray-600 leading-relaxed">{s.copy}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 6. COBERTURA ESTRATÉGICA ===================== -->
+  <section id="cobertura" class="py-24 bg-tle-black text-tle-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-14">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold uppercase tracking-wide">Cobertura Estratégica</h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+        <p class="text-tle-primary text-base font-medium max-w-3xl mx-auto mt-6">
+          Infraestructura conectada para el transporte de carga entre México y Estados Unidos.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div data-reveal>
+          <ImgPlaceholder
+            id="MAPA"
+            nota="Mapa binacional México – EE. UU. con corredores, puntos de cruce y ciudades de cobertura"
+            ratio="aspect-4/3"
+            class="bg-gray-800/40 border-white/30 text-white"
+          />
+          <p class="text-xs text-gray-400 mt-4 text-center">
+            Corredores, puentes internacionales y ciudades con cobertura operativa.
+          </p>
+        </div>
+
+        <div data-reveal-stagger class="space-y-8">
+          <div class="flex gap-5">
+            <div class="w-12 h-12 bg-tle-primary flex items-center justify-center rounded-sm shrink-0">
+              <i class="ph ph-map-pin text-2xl text-tle-black"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-tle-primary mb-2">México</h3>
+              <ul class="flex flex-wrap gap-2 mt-1">
+                {coberturaMx.map((edo) => (
+                  <li class="text-xs text-gray-200 bg-white/10 border border-white/15 rounded-sm px-3 py-1.5">{edo}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div class="flex gap-5">
+            <div class="w-12 h-12 bg-tle-primary flex items-center justify-center rounded-sm shrink-0">
+              <i class="ph ph-flag text-2xl text-tle-black"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-tle-primary mb-2">Estados Unidos</h3>
+              <p class="text-sm text-gray-300 leading-relaxed">
+                Nodos clave en Estados Unidos para el traslado y la distribución final.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div data-reveal class="text-center mt-14">
+        <a href="#contacto" class="inline-flex items-center gap-2 bg-tle-primary text-tle-black px-8 py-4 rounded-sm font-bold text-sm hover:bg-white transition-colors">
+          Solicita tu cotización ahora <i class="ph ph-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 7. PROCESO OPERATIVO ===================== -->
+  <section id="proceso" class="py-20 bg-tle-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-16">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">Proceso Operativo</h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+        <p class="text-sm text-gray-600 max-w-3xl mx-auto mt-6 leading-relaxed">
+          Flujo estructurado para un transporte transfronterizo de carga ágil y seguro.
+        </p>
+      </div>
+
+      <div data-reveal-stagger class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {proceso.map((p, i) => (
+          <div class="relative flex flex-col text-center">
+            {/* Flecha hacia el siguiente paso, solo en escritorio */}
+            {i < proceso.length - 1 && (
+              <span class="hidden lg:flex absolute top-1/3 -right-5 z-20 w-8 h-8 items-center justify-center rounded-full bg-tle-primary text-tle-black" aria-hidden="true">
+                <i class="ph ph-caret-right"></i>
+              </span>
+            )}
+            <div class="relative">
+              <ImgPlaceholder id={`PRO-${p.n}`} nota={p.img} ratio="aspect-4/3" />
+              <span class="absolute -bottom-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-tle-primary text-tle-black font-display font-extrabold text-lg flex items-center justify-center border-4 border-tle-white z-10">
+                {p.n}
+              </span>
+            </div>
+            <h3 class="text-base font-bold text-tle-black mt-10 mb-3 px-2">{p.titulo}</h3>
+            <p class="text-xs text-gray-600 leading-relaxed px-2">{p.copy}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 8. MODALIDADES Y CARGAS ===================== -->
+  <section id="modalidades" class="py-20 bg-tle-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-14">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">Modalidades y Cargas</h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+        <p class="text-sm text-gray-600 max-w-3xl mx-auto mt-6 leading-relaxed">
+          Capacidad adaptable para el transporte transfronterizo de carga.
+        </p>
+      </div>
+
+      <div data-reveal-stagger class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {modalidades.map((m, i) => (
+          <article class="bg-tle-white rounded-sm border-t-2 border-tle-primary overflow-hidden flex flex-col">
+            {m.foto
+              ? <img src={m.foto} alt={m.alt} width="700" height="525" loading="lazy" class="w-full aspect-4/3 object-cover" />
+              : <ImgPlaceholder id={`MOD-0${i + 1}`} nota={m.img} ratio="aspect-4/3" />}
+            <div class="p-6 flex flex-col grow">
+              <i class={`ph ${m.icon} text-3xl text-tle-accent mb-4 block`}></i>
+              <h3 class="text-sm font-bold text-tle-black mb-3">{m.titulo}</h3>
+              <p class="text-xs text-gray-600 leading-relaxed">{m.copy}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div data-reveal class="text-center mt-14">
+        <a href="#contacto" class="inline-flex items-center gap-2 bg-tle-primary text-tle-black px-8 py-4 rounded-sm font-bold text-sm hover:bg-tle-black hover:text-tle-white transition-colors">
+          Cotiza tu operación <i class="ph ph-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 9. SECTORES ATENDIDOS ===================== -->
+  <section id="sectores" class="py-20 bg-tle-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-14">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">Sectores Atendidos</h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+        <p class="text-sm text-gray-600 max-w-3xl mx-auto mt-6 leading-relaxed">
+          Especialización operativa para cadenas de suministro exigentes.
+        </p>
+      </div>
+
+      <div data-reveal-stagger class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {sectores.map((s, i) => (
+          <article class="bg-tle-secondary rounded-sm border-l-4 border-tle-primary overflow-hidden flex flex-col">
+            {s.foto
+              ? <img src={s.foto} alt={s.alt} width="730" height="456" loading="lazy" class="w-full aspect-16/10 object-cover" />
+              : <ImgPlaceholder id={`SEC-0${i + 1}`} nota={s.img} ratio="aspect-16/10" />}
+            <div class="p-7 flex flex-col grow">
+              <i class={`ph ${s.icon} text-3xl text-tle-black mb-4 block`}></i>
+              <h3 class="text-base font-bold text-tle-black mb-2">{s.titulo}</h3>
+              <p class="text-xs text-gray-600 leading-relaxed">{s.copy}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 10. SEGURIDAD, CUMPLIMIENTO Y TRAZABILIDAD ===================== -->
+  <section class="py-20 bg-tle-secondary border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-14">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">
+          Seguridad, Cumplimiento y Trazabilidad
+        </h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+        <p class="text-sm text-gray-600 max-w-3xl mx-auto mt-6 leading-relaxed">
+          Tecnología y protocolos para el resguardo de tu operación internacional.
+        </p>
+      </div>
+
+      <div data-reveal class="bg-tle-white rounded-sm overflow-hidden border border-gray-200">
+        <div class="hidden sm:grid grid-cols-2 bg-tle-black text-tle-white text-xs font-bold uppercase tracking-widest">
+          <div class="px-6 py-4">Recurso / Tecnología</div>
+          <div class="px-6 py-4 border-l border-gray-800">Beneficio para tu operación</div>
+        </div>
+        {seguridad.map((row, i) => (
+          <div class={`grid grid-cols-1 sm:grid-cols-2 ${i % 2 === 1 ? 'bg-tle-secondary' : 'bg-tle-white'} ${i > 0 ? 'border-t border-gray-200' : ''}`}>
+            <div class="px-6 py-5 flex items-center">
+              <p class="text-sm font-bold text-tle-black">{row.recurso}</p>
+            </div>
+            <div class="px-6 py-5 sm:border-l border-gray-200 border-t sm:border-t-0">
+              <p class="text-sm font-bold text-tle-accent">{row.beneficio}</p>
+              <p class="text-xs text-gray-600 mt-1">{row.beneficioDetalle}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 11. RESPALDO INSTITUCIONAL ===================== -->
+  <section class="py-20 bg-tle-white border-y border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-12">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">Respaldo Institucional</h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+      </div>
+
+      <blockquote data-reveal class="max-w-3xl mx-auto text-center">
+        <i class="ph ph-quotes text-4xl text-tle-primary mb-4 block"></i>
+        <p class="text-base text-gray-700 leading-relaxed italic">
+          La integración entre TLE y D-Troy respalda la continuidad operacional de empresas líderes en
+          México y Estados Unidos. Como tu aliado integral de la cadena de suministro, combinamos
+          experiencia en carretera, infraestructura propia y la solidez de Grupo ATC para ofrecerte una
+          solución de transporte crossborder sin demoras, estructurada alrededor de la seguridad y el control.
+        </p>
+        <footer class="text-sm font-bold text-tle-black mt-6">
+          — Solidez e infraestructura respaldada por Grupo ATC.
+        </footer>
+      </blockquote>
+    </div>
+  </section>
+
+
+  <!-- ===================== 12. COTIZACIÓN ===================== -->
+  <section id="contacto" class="py-24 bg-tle-primary">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-12">
+        <h2 class="text-2xl sm:text-4xl font-display font-extrabold text-tle-black mb-4 uppercase">
+          Solicita una cotización internacional
+        </h2>
+        <p class="text-tle-black/70 text-sm max-w-2xl mx-auto leading-relaxed">
+          Compártenos los datos generales de tu operación internacional. El equipo revisará el
+          requerimiento para definir la solución y el seguimiento correspondiente.
+        </p>
+      </div>
+
+      <!-- El formulario todavía no envía a ningún destino -->
+      <form data-reveal class="bg-tle-white p-8 sm:p-10 rounded-sm space-y-5 shadow-lg">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label for="nombre" class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Nombre y apellido</label>
+            <input id="nombre" name="nombre" type="text" required class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+          </div>
+          <div>
+            <label for="empresa" class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Empresa</label>
+            <input id="empresa" name="empresa" type="text" required class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label for="correo" class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Correo corporativo</label>
+            <input id="correo" name="correo" type="email" required class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+          </div>
+          <div>
+            <label for="telefono" class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Teléfono</label>
+            <input id="telefono" name="telefono" type="tel" required class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label for="origen" class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">País y ciudad de origen</label>
+            <input id="origen" name="origen" type="text" placeholder="Ej. México, Monterrey" class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+          </div>
+          <div>
+            <label for="destino" class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">País y ciudad de destino</label>
+            <input id="destino" name="destino" type="text" placeholder="Ej. EE. UU., Laredo TX" class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label for="operacion" class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Tipo de operación</label>
+            <select id="operacion" name="operacion" class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none">
+              <option>Exportación (México → EE. UU.)</option>
+              <option>Importación (EE. UU. → México)</option>
+              <option>Ambas</option>
+            </select>
+          </div>
+          <div>
+            <label for="servicio" class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Tipo de servicio / unidad</label>
+            <select id="servicio" name="servicio" class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none">
+              {modalidadesNombres.map((n) => <option>{n}</option>)}
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label for="carga" class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Tipo de carga</label>
+            <input id="carga" name="carga" type="text" class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+          </div>
+          <div>
+            <label for="frecuencia" class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Frecuencia</label>
+            <input id="frecuencia" name="frecuencia" type="text" placeholder="Ej. semanal" class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+          </div>
+        </div>
+
+        <div>
+          <label for="fecha" class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Fecha estimada de movimiento</label>
+          <input id="fecha" name="fecha" type="date" class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+        </div>
+
+        <div>
+          <label for="mensaje" class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Mensaje</label>
+          <textarea id="mensaje" name="mensaje" rows="4" class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none"></textarea>
+        </div>
+
+        <button type="submit" class="w-full bg-tle-black text-tle-white font-bold py-4 text-sm uppercase tracking-wider hover:bg-tle-accent hover:text-tle-black transition-colors">
+          Solicitar
+        </button>
+      </form>
+    </div>
+  </section>
+
+
+  <!-- ===================== 13. CIERRE ===================== -->
+  <footer class="bg-tle-black text-tle-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <img src="/images/tle-logo-footer.png" alt="TLE" width="140" height="80" loading="lazy" class="h-12 w-auto mx-auto mb-8" />
+      <h2 data-reveal class="text-xl sm:text-3xl font-display font-extrabold text-tle-primary mb-6 uppercase max-w-3xl mx-auto leading-tight">
+        Conecta tu operación internacional con visibilidad y control
+      </h2>
+      <p class="text-sm text-gray-300 max-w-2xl mx-auto leading-relaxed">
+        Reduce la fragmentación de tu cruce fronterizo con la propuesta coordinada de TLE y D-Troy.
+      </p>
+      <p class="text-xs text-gray-500 mt-10">
+        © 2026 TLE Transportes y Logística Integrales. Todos los derechos reservados.
+      </p>
+    </div>
+  </footer>
+
+</Layout>

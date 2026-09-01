@@ -1,0 +1,212 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es" class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+
+		<!-- Activa las animaciones solo si hay JS y el usuario no pidió reducir movimiento.
+		     Va inline y en el <head> para que corra antes del primer paint (evita flash). -->
+		<script is:inline>
+			if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+				document.documentElement.classList.add('js-anim');
+			}
+		</script>
+
+		<!-- Google Fonts: Inter (Body) & Syne (Headings for industrial/modern look) -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+
+		<!-- Phosphor Icons -->
+		<script is:inline src="https://unpkg.com/@phosphor-icons/web"></script>
+
+		<!-- Swiper CSS -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+		<title>{title}</title>
+	</head>
+	<body>
+		<!-- Header -->
+		<header
+			class="w-full fixed top-0 z-50 bg-tle-white/90 backdrop-blur-md border-b border-gray-100 transition-all duration-300"
+			id="main-header"
+		>
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between transition-all duration-300">
+				<a href="/" class="shrink-0" aria-label="TLE — inicio">
+					<img src="/images/tle-logo.webp" alt="TLE" width="350" height="150" class="h-11 w-auto" />
+				</a>
+				<nav class="hidden md:flex gap-8">
+					<a href="#solucion" class="text-sm font-medium hover:text-tle-primary transition-colors">Solución</a>
+					<a href="#cobertura" class="text-sm font-medium hover:text-tle-primary transition-colors">Cobertura</a>
+					<a href="#proceso" class="text-sm font-medium hover:text-tle-primary transition-colors">Proceso</a>
+					<a href="#modalidades" class="text-sm font-medium hover:text-tle-primary transition-colors">Modalidades</a>
+					<a href="#sectores" class="text-sm font-medium hover:text-tle-primary transition-colors">Sectores</a>
+				</nav>
+				<a
+					href="#contacto"
+					class="bg-tle-primary text-tle-black px-6 py-2.5 rounded-sm font-semibold text-sm hover:bg-tle-accent transition-colors"
+				>
+					Cotizar Internacional
+				</a>
+			</div>
+		</header>
+
+		<main class="pt-20">
+			<slot />
+		</main>
+
+		<!-- GSAP & ScrollTrigger -->
+		<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+		<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+		<!-- Swiper JS -->
+		<script is:inline src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+		<!-- Lógica Global -->
+		<script is:inline>
+			document.addEventListener('DOMContentLoaded', () => {
+				// Header shrink on scroll
+				const header = document.getElementById('main-header');
+				const bar = header.firstElementChild;
+				window.addEventListener('scroll', () => {
+					if (window.scrollY > 50) {
+						header.classList.add('shadow-sm');
+						bar.classList.add('h-16');
+						bar.classList.remove('h-20');
+					} else {
+						header.classList.remove('shadow-sm');
+						bar.classList.add('h-20');
+						bar.classList.remove('h-16');
+					}
+				});
+
+				// Si no hay .js-anim (sin GSAP o con reduce-motion) no animamos nada.
+				if (!document.documentElement.classList.contains('js-anim') || typeof gsap === 'undefined') return;
+
+				gsap.registerPlugin(ScrollTrigger);
+
+				// Al terminar una animación quitamos el data-attribute ANTES de limpiar los
+				// estilos inline: si no, el elemento vuelve a heredar el opacity:0 del CSS.
+				const settle = (el, targets) => {
+					el.removeAttribute('data-reveal');
+					el.removeAttribute('data-reveal-stagger');
+					el.removeAttribute('data-hero-anim');
+					gsap.set(targets || el, { clearProps: 'opacity,transform,willChange' });
+				};
+
+				// --- Hero: entrada encadenada al cargar ---
+				const heroEls = gsap.utils.toArray('[data-hero-anim]');
+				if (heroEls.length) {
+					gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.9 } })
+						.fromTo(heroEls, { y: 40, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.12 })
+						.call(() => heroEls.forEach((el) => settle(el)));
+				}
+
+				// --- Reveal simple: un elemento que aparece al entrar en viewport ---
+				gsap.utils.toArray('[data-reveal]').forEach((el) => {
+					gsap.fromTo(el, { y: 40, opacity: 0 }, {
+						y: 0,
+						opacity: 1,
+						duration: 0.8,
+						ease: 'power3.out',
+						scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+						onComplete: () => settle(el),
+					});
+				});
+
+				// --- Reveal en cascada: los hijos directos entran uno tras otro ---
+				gsap.utils.toArray('[data-reveal-stagger]').forEach((group) => {
+					const items = group.children;
+					gsap.fromTo(items, { y: 32, opacity: 0 }, {
+						y: 0,
+						opacity: 1,
+						duration: 0.7,
+						ease: 'power3.out',
+						stagger: 0.08,
+						scrollTrigger: { trigger: group, start: 'top 85%', once: true },
+						onComplete: () => settle(group, items),
+					});
+				});
+
+				// --- Contadores: animan el número respetando prefijo/sufijo y formato ---
+				gsap.utils.toArray('[data-counter]').forEach((el) => {
+					const target = parseFloat(el.dataset.counter);
+					const prefix = el.dataset.counterPrefix || '';
+					const suffix = el.dataset.counterSuffix || '';
+					const decimals = (el.dataset.counter.split('.')[1] || '').length;
+					const obj = { val: 0 };
+					gsap.to(obj, {
+						val: target,
+						duration: 2,
+						ease: 'power2.out',
+						scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+						onUpdate: () => {
+							const n = obj.val.toLocaleString('es-MX', {
+								minimumFractionDigits: decimals,
+								maximumFractionDigits: decimals,
+							});
+							el.textContent = prefix + n + suffix;
+						},
+					});
+				});
+
+				// --- Parallax suave de la imagen del hero ---
+				const heroImg = document.querySelector('[data-parallax]');
+				if (heroImg) {
+					gsap.to(heroImg, {
+						yPercent: 12,
+						ease: 'none',
+						scrollTrigger: {
+							trigger: heroImg.closest('section'),
+							start: 'top top',
+							end: 'bottom top',
+							scrub: true,
+						},
+					});
+				}
+
+				// Recalcula posiciones cuando las fuentes web cambian la altura del texto
+				if (document.fonts && document.fonts.ready) {
+					document.fonts.ready.then(() => ScrollTrigger.refresh());
+				}
+
+				// Red de seguridad: las imágenes diferidas cambian la altura de la página
+				// después de que ScrollTrigger calculó los triggers, y una animación puede
+				// quedarse sin disparar dejando su bloque invisible. Tras 'load' se
+				// recalcula y se muestra a la fuerza lo que siga en opacity 0 y ya sea
+				// visible en pantalla.
+				window.addEventListener('load', () => {
+					ScrollTrigger.refresh();
+					const rescatar = () => {
+						document.querySelectorAll('[data-reveal], [data-reveal-stagger]').forEach((el) => {
+							const r = el.getBoundingClientRect();
+							if (r.top > window.innerHeight) return; // aún no le toca
+							const objetivos = el.hasAttribute('data-reveal-stagger') ? el.children : [el];
+							Array.from(objetivos).forEach((t) => {
+								if (parseFloat(getComputedStyle(t).opacity) === 0) settle(el, objetivos);
+							});
+						});
+					};
+					rescatar();
+					window.addEventListener('scroll', rescatar, { passive: true });
+				});
+			});
+		</script>
+	</body>
+</html>
