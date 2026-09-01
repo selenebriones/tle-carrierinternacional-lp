@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# notas de herramientas de IA (no van al repo)
+AGENTS.md
+CLAUDE.md
