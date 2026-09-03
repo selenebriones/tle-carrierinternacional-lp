@@ -53,16 +53,21 @@ const solucion = [
   {
     icon: 'ph-arrows-left-right',
     titulo: 'Cruce Coordinado (Integración Binacional)',
-    img: 'Maniobra de cruce en puente internacional',
+    foto: '/images/cruce-internacional.webp',
+    alt: 'Garitas y patio fiscal de un puente internacional en la frontera México – EE. UU.',
     copy: 'Continuidad operacional entre ambos países bajo un solo estándar de trazabilidad y control. Centralizamos la comunicación para asegurar el flujo constante de tu mercancía en frontera.',
   },
   {
     icon: 'ph-flag',
     titulo: 'D-Troy (Distribución en EE. UU.)',
-    foto: '/images/tle-unidades-01.webp',
-    alt: 'Tractocamión TLE con caja seca en ruta hacia Estados Unidos',
+    foto: '/images/d_troy_sol.webp',
+    alt: 'Unidad D-Troy y unidad TLE lado a lado en patio de operaciones',
     copy: 'Capacidad operativa y presencia estratégica en nodos clave en Estados Unidos para garantizar el traslado final sin fricciones de tu caja seca crossborder y carga especializada.',
   },
+];
+
+const coberturaUsa = [
+  'Dallas, TX (Sede D-Troy)', 'Fremont, CA', 'Kansas City, MO', 'Detroit, MI',
 ];
 
 const coberturaMx = [
@@ -72,23 +77,19 @@ const coberturaMx = [
 
 const proceso = [
   { n: '01', titulo: 'Entendemos y Diagnosticamos tu Operación',
-    copy: 'Evaluamos origen, destino, tipo de mercancía y requerimientos específicos para el cruce de mercancía en frontera México – EU.',
-    img: 'Reunión de diagnóstico con el cliente' },
+    copy: 'Evaluamos origen, destino, tipo de mercancía y requerimientos específicos para el cruce de mercancía en frontera México – EU.' },
   { n: '02', titulo: 'Diseñamos la Solución Coordinada',
-    copy: 'Planificamos la integración logística binacional entre TLE y D-Troy para asegurar continuidad y eficiencia.',
-    img: 'Planeación de ruta binacional' },
+    copy: 'Planificamos la integración logística binacional entre TLE y D-Troy para asegurar continuidad y eficiencia.' },
   { n: '03', titulo: 'Ejecución, Tránsito y Cruce Fronterizo',
-    copy: 'Realizamos el traslado bajo protocolos rigurosos de seguridad para lograr un transporte crossborder sin demoras.',
-    img: 'Unidad cruzando puente internacional' },
+    copy: 'Realizamos el traslado bajo protocolos rigurosos de seguridad para lograr un transporte crossborder sin demoras.' },
   { n: '04', titulo: 'Trazabilidad Activa y Entrega Final',
-    copy: 'Mantenemos visibilidad completa del estatus en tiempo real hasta la recepción exitosa en destino.',
-    img: 'Entrega en andén de destino' },
+    copy: 'Mantenemos visibilidad completa del estatus en tiempo real hasta la recepción exitosa en destino.' },
 ];
 
 const modalidades = [
-  { icon: 'ph-package', titulo: 'Caja Seca Crossborder (Dry Van)', foto: '/images/tle-servicios-tn-01-1.webp', alt: 'Tractocamiones TLE con caja seca en patio',
+  { icon: 'ph-package', titulo: 'Caja Seca Crossborder (Dry Van)', foto: '/images/camion_caja_seca.webp', alt: 'Tractocamión TLE con caja seca en patio de operaciones',
     copy: 'Solución eficiente para insumos, mercancía empacada y productos terminados con protección total y trazabilidad en tránsito.' },
-  { icon: 'ph-stack-simple', titulo: 'Plataformas (Flatbed)', foto: '/images/tle-servicios-tn-03.webp', alt: 'Plataforma lowboy con maquinaria pesada',
+  { icon: 'ph-stack-simple', titulo: 'Plataformas (Flatbed)', foto: '/images/camion_plataforma.webp', alt: 'Tractocamión TLE con plataforma de carga',
     copy: 'Equipos especializados de alta capacidad para carga sobredimensionada, maquinaria e insumos industriales.' },
   { icon: 'ph-car', titulo: 'Nodrizas (Madrinas)', foto: '/images/tle-servicios-tn-04.webp', alt: 'Nodriza TLE cargada de vehículos',
     copy: 'Transporte especializado de alta seguridad diseñado para la industria automotriz y el traslado eficiente de vehículos.' },
@@ -97,11 +98,11 @@ const modalidades = [
 ];
 
 const sectores = [
-  { icon: 'ph-car', titulo: 'Automotriz', foto: '/images/nodriza.png', alt: 'Flotilla de nodrizas TLE para la industria automotriz',
+  { icon: 'ph-car', titulo: 'Automotriz', foto: '/images/nodriza.webp', alt: 'Flotilla de nodrizas TLE para la industria automotriz',
     copy: 'Control de tiempos crítico y trazabilidad activa para garantizar el flujo constante de insumos, previniendo paros de producción en líneas de ensamblaje.' },
   { icon: 'ph-factory', titulo: 'Manufactura e Industria General', foto: '/images/tle-servicios-tn-02.webp', alt: 'Carga de contenedor TLE con tarimas en nave industrial',
     copy: 'Soluciones integrales para la importación y exportación de mercancías, optimizando el abastecimiento de materias primas y distribución transfronteriza de producto terminado.' },
-  { icon: 'ph-storefront', titulo: 'Retail y Comercio Mayorista', img: 'Centro de distribución con andenes',
+  { icon: 'ph-storefront', titulo: 'Retail y Comercio Mayorista', foto: '/images/tle-servicios-ayni-01.webp', alt: 'Vista aérea de tractocamiones en los andenes de un centro de distribución',
     copy: 'Capacidad operativa flexible para responder a picos de demanda y asegurar entregas puntuales en redes de distribución nacional e internacional.' },
 ];
 
@@ -128,32 +129,32 @@ const modalidadesNombres = modalidades.map((m) => m.titulo);
 
   <!-- ===================== 1. HERO ===================== -->
   <section class="relative w-full min-h-[80vh] flex items-center bg-tle-black text-tle-white overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/25 z-10"></div>
+    <div class="absolute inset-0 z-10 bg-black/70 sm:bg-transparent sm:bg-[linear-gradient(to_right,rgba(0,0,0,0.95)_0%,rgba(0,0,0,0.9)_45%,rgba(0,0,0,0.7)_72%,rgba(0,0,0,0.35)_100%)]"></div>
     <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10"></div>
     <img
-      src="/images/hero_TLE.jpg"
-      alt="Tractocamión TLE en carretera rumbo a la frontera"
+      src="/images/d_troy.webp"
+      alt="Tractocamión D-Troy Logistics junto a una unidad TLE, la red binacional México – Estados Unidos"
       data-parallax
       fetchpriority="high"
-      width="800"
-      height="600"
-      class="absolute inset-0 w-full h-full object-cover object-[72%_center] opacity-70 z-0"
+      width="1600"
+      height="1017"
+      class="absolute inset-0 w-full h-full object-cover object-[62%_center] lg:object-[64%_60%] opacity-90 z-0"
     />
 
     <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full">
       <span data-hero-anim class="inline-block bg-tle-primary text-tle-black text-xs font-bold uppercase tracking-[0.2em] px-3 py-1 mb-6">
         Soluciones de Supply Chain Internacional
       </span>
-      <h1 data-hero-anim class="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold leading-[1.08] mb-6 max-w-4xl uppercase">
+      <h1 data-hero-anim class="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold leading-[1.08] mb-6 max-w-4xl uppercase [text-shadow:0_2px_18px_rgba(0,0,0,0.85)]">
         Cruza la frontera sin perder <span class="text-tle-primary">visibilidad</span> de tu operación
       </h1>
-      <p data-hero-anim class="text-gray-300 text-base sm:text-lg max-w-3xl mb-4 font-light leading-relaxed">
+      <p data-hero-anim class="text-gray-300 text-base sm:text-lg max-w-2xl mb-4 font-light leading-relaxed">
         Somos tu aliado integral de la cadena de suministro, gestionamos tu <strong class="font-semibold text-white">flete
         internacional terrestre México – USA</strong> a través de una empresa de logística binacional coordinada entre
-        TLE y D-Troy. Agilizamos la <strong class="font-semibold text-white">logística para exportación México</strong>
-        con pasos fronterizos en menos de 15 minutos, respaldados por máxima seguridad y trazabilidad en tiempo real.
+        TLE y D-Troy. Agilizamos la <strong class="font-semibold text-white">logística para exportación México</strong> con
+        pasos fronterizos en menos de 15 minutos, respaldados por máxima seguridad y trazabilidad en tiempo real.
       </p>
-      <p data-hero-anim class="text-tle-primary text-sm sm:text-base font-medium max-w-3xl mb-10">
+      <p data-hero-anim class="text-tle-primary text-sm sm:text-base font-medium max-w-2xl mb-10">
         Estrategia binacional coordinada. Un mismo enfoque de seguridad y trazabilidad.
       </p>
       <div data-hero-anim class="flex flex-col sm:flex-row gap-4">
@@ -190,8 +191,21 @@ const modalidadesNombres = modalidades.map((m) => m.titulo);
 
 
   <!-- ===================== 3. RESPALDO INSTITUCIONAL Y RED BINACIONAL ===================== -->
-  <section class="py-20 bg-tle-secondary">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section class="relative py-20 bg-tle-secondary overflow-hidden">
+    {/* Fondo: la flotilla en escala de grises, muy tenue para no competir con el texto. */}
+    <img
+      src="/images/bg_todos_camiones.webp"
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      width="1400"
+      height="664"
+      class="absolute inset-0 w-full h-full object-cover grayscale opacity-18 pointer-events-none select-none"
+    />
+    {/* Vela clara: mantiene el contraste del texto por encima de la fotografía. */}
+    <div class="absolute inset-0 bg-tle-secondary/35" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div data-reveal class="text-center mb-14">
         <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">
           Respaldo institucional y red binacional
@@ -305,44 +319,48 @@ const modalidadesNombres = modalidades.map((m) => m.titulo);
         </p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <div data-reveal>
-          <ImgPlaceholder
-            id="MAPA"
-            nota="Mapa binacional México – EE. UU. con corredores, puntos de cruce y ciudades de cobertura"
-            ratio="aspect-4/3"
-            class="bg-gray-800/40 border-white/30 text-white"
-          />
-          <p class="text-xs text-gray-400 mt-4 text-center">
-            Corredores, puentes internacionales y ciudades con cobertura operativa.
-          </p>
+      {/* La infografía va a todo lo ancho: tiene rótulos finos que no se leen a media columna. */}
+      <figure data-reveal class="m-0 max-w-5xl mx-auto">
+        <img
+          src="/images/mapa.webp"
+          alt="Mapa de presencia estratégica de ATC Group y D-Troy en América del Norte: oficinas en Monterrey, Salinas Victoria, Nuevo Laredo, Ramos Arizpe, San Luis Potosí, Silao y Salamanca; puertos de Manzanillo, Lázaro Cárdenas y Altamira; y nodos en Dallas, Fremont, Kansas City y Detroit"
+          width="1454"
+          height="780"
+          loading="lazy"
+          class="w-full h-auto rounded-sm"
+        />
+        <figcaption class="text-xs text-gray-400 mt-4 text-center">
+          Corredores, oficinas, puertos y nodos de distribución de la red binacional.
+        </figcaption>
+      </figure>
+
+      {/* Resumen en texto: el mapa es imagen, esto lo deja legible y accesible. */}
+      <div data-reveal-stagger class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-14">
+        <div class="flex gap-5">
+          <div class="w-12 h-12 bg-tle-primary flex items-center justify-center rounded-sm shrink-0">
+            <i class="ph ph-map-pin text-2xl text-tle-black"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-tle-primary mb-2">México — Sede ATC en Monterrey</h3>
+            <ul class="flex flex-wrap gap-2 mt-1">
+              {coberturaMx.map((punto) => (
+                <li class="text-xs text-gray-200 bg-white/10 border border-white/15 rounded-sm px-3 py-1.5">{punto}</li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        <div data-reveal-stagger class="space-y-8">
-          <div class="flex gap-5">
-            <div class="w-12 h-12 bg-tle-primary flex items-center justify-center rounded-sm shrink-0">
-              <i class="ph ph-map-pin text-2xl text-tle-black"></i>
-            </div>
-            <div>
-              <h3 class="text-base font-bold text-tle-primary mb-2">México</h3>
-              <ul class="flex flex-wrap gap-2 mt-1">
-                {coberturaMx.map((edo) => (
-                  <li class="text-xs text-gray-200 bg-white/10 border border-white/15 rounded-sm px-3 py-1.5">{edo}</li>
-                ))}
-              </ul>
-            </div>
+        <div class="flex gap-5">
+          <div class="w-12 h-12 bg-tle-primary flex items-center justify-center rounded-sm shrink-0">
+            <i class="ph ph-flag text-2xl text-tle-black"></i>
           </div>
-
-          <div class="flex gap-5">
-            <div class="w-12 h-12 bg-tle-primary flex items-center justify-center rounded-sm shrink-0">
-              <i class="ph ph-flag text-2xl text-tle-black"></i>
-            </div>
-            <div>
-              <h3 class="text-base font-bold text-tle-primary mb-2">Estados Unidos</h3>
-              <p class="text-sm text-gray-300 leading-relaxed">
-                Nodos clave en Estados Unidos para el traslado y la distribución final.
-              </p>
-            </div>
+          <div>
+            <h3 class="text-base font-bold text-tle-primary mb-2">Estados Unidos — Nodos clave</h3>
+            <ul class="flex flex-wrap gap-2 mt-1">
+              {coberturaUsa.map((nodo) => (
+                <li class="text-xs text-gray-200 bg-white/10 border border-white/15 rounded-sm px-3 py-1.5">{nodo}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
@@ -367,23 +385,20 @@ const modalidadesNombres = modalidades.map((m) => m.titulo);
         </p>
       </div>
 
-      <div data-reveal-stagger class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div data-reveal-stagger class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-4">
         {proceso.map((p, i) => (
-          <div class="relative flex flex-col text-center">
-            {/* Flecha hacia el siguiente paso, solo en escritorio */}
+          <div class="relative flex flex-col items-center text-center px-2">
+            <div class="w-24 h-24 rounded-full bg-tle-primary text-tle-black font-display font-extrabold text-3xl flex items-center justify-center mb-6 relative z-10">
+              {p.n}
+            </div>
+            {/* Conector hacia el siguiente paso: solo entre tarjetas de la misma fila */}
             {i < proceso.length - 1 && (
-              <span class="hidden lg:flex absolute top-1/3 -right-5 z-20 w-8 h-8 items-center justify-center rounded-full bg-tle-primary text-tle-black" aria-hidden="true">
-                <i class="ph ph-caret-right"></i>
+              <span class="hidden lg:block absolute top-12 left-1/2 w-full h-px bg-gray-300 z-0" aria-hidden="true">
+                <i class="ph ph-caret-right absolute -right-1 -top-2.5 text-gray-400 text-sm"></i>
               </span>
             )}
-            <div class="relative">
-              <ImgPlaceholder id={`PRO-${p.n}`} nota={p.img} ratio="aspect-4/3" />
-              <span class="absolute -bottom-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-tle-primary text-tle-black font-display font-extrabold text-lg flex items-center justify-center border-4 border-tle-white z-10">
-                {p.n}
-              </span>
-            </div>
-            <h3 class="text-base font-bold text-tle-black mt-10 mb-3 px-2">{p.titulo}</h3>
-            <p class="text-xs text-gray-600 leading-relaxed px-2">{p.copy}</p>
+            <h3 class="text-base font-bold text-tle-black mb-3">{p.titulo}</h3>
+            <p class="text-xs text-gray-600 leading-relaxed">{p.copy}</p>
           </div>
         ))}
       </div>
@@ -514,8 +529,20 @@ const modalidadesNombres = modalidades.map((m) => m.titulo);
 
 
   <!-- ===================== 12. COTIZACIÓN ===================== -->
-  <section id="contacto" class="py-24 bg-tle-primary">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section id="contacto" class="relative py-24 bg-tle-primary overflow-hidden">
+    {/* Fondo: la flotilla en escala de grises, tenue bajo una capa del amarillo TLE. */}
+    <img
+      src="/images/bg_contacto.webp"
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      width="1400"
+      height="840"
+      class="absolute inset-0 w-full h-full object-cover grayscale opacity-30 pointer-events-none select-none"
+    />
+    <div class="absolute inset-0 bg-tle-primary/55" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <div data-reveal class="text-center mb-12">
         <h2 class="text-2xl sm:text-4xl font-display font-extrabold text-tle-black mb-4 uppercase">
           Solicita una cotización internacional
