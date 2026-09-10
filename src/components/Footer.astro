@@ -1,0 +1,38 @@
+---
+/* Pie de página del sitio. `cierre` controla el bloque de llamada a la acción:
+   se muestra en la landing y se omite donde ya no aplica (la página de gracias,
+   donde la persona acaba de enviar su solicitud). */
+interface Props {
+  cierre?: boolean;
+}
+
+const { cierre = true } = Astro.props;
+---
+
+<footer class="bg-tle-black text-tle-white py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <img
+      src="/images/tle-logo-footer.png"
+      alt="TLE"
+      width="140"
+      height="80"
+      loading="lazy"
+      class="h-12 w-auto mx-auto mb-8"
+    />
+
+    {cierre && (
+      <>
+        <h2 data-reveal class="text-xl sm:text-3xl font-display font-extrabold text-tle-primary mb-6 uppercase max-w-3xl mx-auto leading-tight">
+          Conecta tu operación internacional con visibilidad y control
+        </h2>
+        <p class="text-sm text-gray-300 max-w-2xl mx-auto leading-relaxed">
+          Reduce la fragmentación de tu cruce fronterizo con la propuesta coordinada de TLE y D-Troy.
+        </p>
+      </>
+    )}
+
+    <p class="text-xs text-gray-500 mt-10">
+      © 2026 TLE Transportes y Logística Integrales. Todos los derechos reservados.
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,163 @@
+---
+/* Sección de cotización. Se monta más de una vez en la landing, así que todos los
+   ids se prefijan con el `id` de la sección: dos formularios con los mismos ids
+   romperían las etiquetas y el script sólo encontraría el primero. */
+interface Props {
+  /** Ancla de la sección y prefijo de los ids internos. */
+  id: string;
+  titulo?: string;
+  intro?: string;
+  tiposOperacion: string[];
+  tiposServicio: string[];
+  frecuencias: string[];
+  turnstileSiteKey: string;
+  turnstileEsPrueba: boolean;
+}
+
+const {
+  id,
+  titulo = 'Solicita una cotización internacional',
+  intro = 'Compártenos los datos generales de tu operación internacional. El equipo revisará el requerimiento para definir la solución y el seguimiento correspondiente.',
+  tiposOperacion,
+  tiposServicio,
+  frecuencias,
+  turnstileSiteKey,
+  turnstileEsPrueba,
+} = Astro.props;
+---
+
+  <section id={id} class="relative py-24 bg-tle-primary overflow-hidden">
+    {/* Fondo: la flotilla en escala de grises, tenue bajo una capa del amarillo TLE. */}
+    <img
+      src="/images/bg_contacto.webp"
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      width="1400"
+      height="840"
+      class="absolute inset-0 w-full h-full object-cover grayscale opacity-30 pointer-events-none select-none"
+    />
+    <div class="absolute inset-0 bg-tle-primary/55" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-12">
+        <h2 class="text-2xl sm:text-4xl font-display font-extrabold text-tle-black mb-4 uppercase">{titulo}</h2>
+        <p class="text-tle-black/70 text-sm max-w-2xl mx-auto leading-relaxed">{intro}</p>
+      </div>
+
+      <form id={`form-${id}`} data-cotizacion novalidate data-reveal class="bg-tle-white p-8 sm:p-10 rounded-sm space-y-5 shadow-lg">
+        {/* Trampa para bots: invisible para la persona, irresistible para un robot. */}
+        <div class="absolute w-px h-px -m-px overflow-hidden" aria-hidden="true">
+          <label for={`website-${id}`}>No llenar este campo</label>
+          <input type="text" id={`website-${id}`} name="website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        {/* Datos de contexto: ruta de la landing, campaña y marca de tiempo anti-bot. */}
+        <input type="hidden" name="origen" id={`origen-${id}`} />
+        <input type="hidden" name="formLoadedAt" id={`formLoadedAt-${id}`} />
+        <input type="hidden" name="utm_source" id={`utm_source-${id}`} />
+        <input type="hidden" name="utm_medium" id={`utm_medium-${id}`} />
+        <input type="hidden" name="utm_campaign" id={`utm_campaign-${id}`} />
+        <input type="hidden" name="utm_term" id={`utm_term-${id}`} />
+        <input type="hidden" name="utm_content" id={`utm_content-${id}`} />
+        <input type="hidden" name="gclid" id={`gclid-${id}`} />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label for={`nombre-${id}`} class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Nombre y apellido</label>
+            <input id={`nombre-${id}`} name="nombre" type="text" required class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+            <p class="field-error hidden text-xs text-red-600 mt-1"></p>
+          </div>
+          <div>
+            <label for={`empresa-${id}`} class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Empresa</label>
+            <input id={`empresa-${id}`} name="empresa" type="text" required class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+            <p class="field-error hidden text-xs text-red-600 mt-1"></p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label for={`correo-${id}`} class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Correo corporativo</label>
+            <input id={`correo-${id}`} name="correo" type="email" required  inputmode="email" autocomplete="email" class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+            <p class="field-error hidden text-xs text-red-600 mt-1"></p>
+          </div>
+          <div>
+            <label for={`telefono-${id}`} class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Teléfono</label>
+            <input id={`telefono-${id}`} name="telefono" type="tel" required  inputmode="tel" autocomplete="tel" placeholder="Ej. 81 1234 5678" class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+            <p class="field-error hidden text-xs text-red-600 mt-1"></p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label for={`ciudad_origen-${id}`} class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">País y ciudad de origen</label>
+            <input id={`ciudad_origen-${id}`} name="ciudad_origen" type="text" required  placeholder="Ej. México, Monterrey" class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+            <p class="field-error hidden text-xs text-red-600 mt-1"></p>
+          </div>
+          <div>
+            <label for={`destino-${id}`} class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">País y ciudad de destino</label>
+            <input id={`destino-${id}`} name="destino" type="text" required  placeholder="Ej. EE. UU., Laredo TX" class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+            <p class="field-error hidden text-xs text-red-600 mt-1"></p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label for={`operacion-${id}`} class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Tipo de operación</label>
+            <select id={`operacion-${id}`} name="operacion" required class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none">
+              <option value="">Selecciona una opción</option>
+              {tiposOperacion.map((o) => <option value={o}>{o}</option>)}
+            </select>
+            <p class="field-error hidden text-xs text-red-600 mt-1"></p>
+          </div>
+          <div>
+            <label for={`servicio-${id}`} class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Tipo de servicio / unidad</label>
+            <select id={`servicio-${id}`} name="servicio" required class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none">
+              <option value="">Selecciona una opción</option>
+              {tiposServicio.map((n) => <option value={n}>{n}</option>)}
+            </select>
+            <p class="field-error hidden text-xs text-red-600 mt-1"></p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label for={`carga-${id}`} class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Tipo de carga</label>
+            <input id={`carga-${id}`} name="carga" type="text" required  placeholder="Ej. autopartes" class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+            <p class="field-error hidden text-xs text-red-600 mt-1"></p>
+          </div>
+          <div>
+            <label for={`frecuencia-${id}`} class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Frecuencia</label>
+            <select id={`frecuencia-${id}`} name="frecuencia" required class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none">
+              <option value="">Selecciona una opción</option>
+              {frecuencias.map((f) => <option value={f}>{f}</option>)}
+            </select>
+            <p class="field-error hidden text-xs text-red-600 mt-1"></p>
+          </div>
+        </div>
+
+        <div>
+          <label for={`fecha-${id}`} class="block text-xs font-bold uppercase tracking-wider mb-2 text-tle-black">Fecha estimada de movimiento</label>
+          <input id={`fecha-${id}`} name="fecha" type="date" required class="w-full bg-tle-secondary border border-gray-200 px-4 py-3 text-sm rounded-sm focus:border-tle-primary outline-none" />
+          <p class="field-error hidden text-xs text-red-600 mt-1"></p>
+        </div>
+
+        {/* Turnstile de Cloudflare */}
+        <div>
+          <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="light" data-language="es"></div>
+          {turnstileEsPrueba && (
+            <p class="text-xs text-tle-accent mt-2">
+              Captcha en modo de prueba: falta configurar PUBLIC_TURNSTILE_SITE_KEY.
+            </p>
+          )}
+          <p class="field-error hidden text-xs text-red-600 mt-1"></p>
+        </div>
+
+        <p id={`status-${id}`} data-status role="status" aria-live="polite" class="hidden text-sm rounded-sm px-4 py-3"></p>
+
+        <button type="submit" class="w-full bg-tle-black text-tle-white font-bold py-4 text-sm uppercase tracking-wider hover:bg-tle-accent hover:text-tle-black transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+          Solicitar
+        </button>
+      </form>
+    </div>
+  </section>

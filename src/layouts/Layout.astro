@@ -7,6 +7,10 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+
+// Desde /gracias las anclas deben apuntar a la home; dentro de la home se quedan locales
+// para no recargar la página en cada clic del menú.
+const base = Astro.url.pathname === '/' ? '' : '/';
 ---
 
 <!doctype html>
@@ -41,6 +45,9 @@ const { title, description } = Astro.props;
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
 		<title>{title}</title>
+
+		<!-- Metadatos extra por página (ej. noindex en /gracias) -->
+		<slot name="head" />
 	</head>
 	<body>
 		<!-- Header -->
@@ -53,13 +60,13 @@ const { title, description } = Astro.props;
 					<img src="/images/tle-logo.webp" alt="TLE" width="350" height="150" class="h-11 w-auto" />
 				</a>
 				<nav class="hidden md:flex gap-8">
-					<a href="#cobertura" class="text-sm font-medium hover:text-tle-primary transition-colors">Cobertura</a>
-					<a href="#proceso" class="text-sm font-medium hover:text-tle-primary transition-colors">Proceso</a>
-					<a href="#modalidades" class="text-sm font-medium hover:text-tle-primary transition-colors">Modalidades</a>
-					<a href="#sectores" class="text-sm font-medium hover:text-tle-primary transition-colors">Sectores</a>
+					<a href={`${base}#cobertura`} class="text-sm font-medium hover:text-tle-primary transition-colors">Cobertura</a>
+					<a href={`${base}#proceso`} class="text-sm font-medium hover:text-tle-primary transition-colors">Proceso</a>
+					<a href={`${base}#modalidades`} class="text-sm font-medium hover:text-tle-primary transition-colors">Modalidades</a>
+					<a href={`${base}#sectores`} class="text-sm font-medium hover:text-tle-primary transition-colors">Sectores</a>
 				</nav>
 				<a
-					href="#contacto"
+					href={`${base}#contacto`}
 					class="bg-tle-primary text-tle-black px-6 py-2.5 rounded-sm font-semibold text-sm hover:bg-tle-accent transition-colors"
 				>
 					Cotizar Internacional
@@ -79,6 +86,18 @@ const { title, description } = Astro.props;
 
 		<!-- Lógica Global -->
 		<script is:inline>
+			// Llegada con hash desde otra página (por ejemplo, el menú de /gracias).
+			window.addEventListener('load', () => {
+				if (!location.hash) return;
+				const destino = document.querySelector(location.hash);
+				if (!destino) return;
+				const ir = () => destino.scrollIntoView({ behavior: 'auto', block: 'start' });
+				ir();
+				// Las imágenes diferidas cambian la altura después del primer salto.
+				setTimeout(ir, 300);
+				setTimeout(ir, 900);
+			});
+
 			document.addEventListener('DOMContentLoaded', () => {
 				// Header shrink on scroll
 				const header = document.getElementById('main-header');

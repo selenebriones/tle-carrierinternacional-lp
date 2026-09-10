@@ -26,3 +26,6 @@ pnpm-debug.log*
 # notas de herramientas de IA (no van al repo)
 AGENTS.md
 CLAUDE.md
+
+# salida del build de Vercel
+.vercel/

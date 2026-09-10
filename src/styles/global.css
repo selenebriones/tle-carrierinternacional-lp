@@ -14,6 +14,10 @@
 }
 
 @layer base {
+  /* El header fijo mide 5rem: las anclas se detienen debajo de él. */
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
   body {
     @apply font-sans bg-tle-white text-tle-black antialiased overflow-x-hidden;
   }

@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title="TLE | Solicitud enviada — Carrier Internacional"
+  description="Recibimos tu solicitud de cotización internacional. Un especialista de TLE se pondrá en contacto contigo."
+>
+  <!-- noindex: es una página de confirmación, no debe aparecer en buscadores -->
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+
+  <section class="relative bg-tle-white text-tle-black min-h-[60vh] flex items-center py-24 overflow-hidden">
+    {/* Mismo tratamiento que las secciones claras de la landing: la foto en escala
+        de grises, muy tenue, bajo una vela clara. */}
+    <img
+      src="/images/bg_contacto.webp"
+      alt=""
+      aria-hidden="true"
+      width="1400"
+      height="840"
+      class="absolute inset-0 w-full h-full object-cover grayscale opacity-18 pointer-events-none select-none"
+    />
+    <div class="absolute inset-0 bg-tle-secondary/35" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="w-20 h-20 rounded-full bg-tle-primary text-tle-black flex items-center justify-center mx-auto mb-8">
+        <i class="ph ph-check text-4xl"></i>
+      </div>
+
+      <span class="inline-block bg-tle-primary text-tle-black text-xs font-bold uppercase tracking-[0.2em] px-3 py-1 mb-6">
+        Solicitud recibida
+      </span>
+
+      <h1 class="text-3xl sm:text-4xl font-display font-extrabold uppercase leading-tight mb-6">
+        Gracias por contactar a <span class="text-tle-primary">TLE</span>
+      </h1>
+
+      <p class="text-gray-600 text-base leading-relaxed mb-4">
+        Recibimos los datos de tu operación internacional. Un especialista revisará el
+        requerimiento y se pondrá en contacto contigo para definir la solución y el
+        seguimiento correspondiente.
+      </p>
+
+      <p class="text-sm text-gray-500 mb-10">
+        Si tu necesidad es urgente, escríbenos directamente a <a
+          href="mailto:contacto@tle.com.mx" class="text-tle-accent font-semibold hover:underline">
+          contacto@tle.com.mx
+        </a>.
+      </p>
+
+      <a
+        href="/"
+        class="inline-block bg-tle-black text-tle-white px-8 py-4 rounded-sm font-bold hover:bg-tle-primary hover:text-tle-black transition-colors"
+      >
+        Volver al inicio
+      </a>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
