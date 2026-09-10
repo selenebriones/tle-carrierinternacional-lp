@@ -41,6 +41,7 @@ const integracion = [
   },
 ];
 
+/* --- Sección "Solución Coordinada" desactivada a petición del cliente. ---
 // Tres tarjetas interconectadas con flujo central: TLE → Cruce Coordinado → D-Troy.
 const solucion = [
   {
@@ -64,6 +65,15 @@ const solucion = [
     alt: 'Unidad D-Troy y unidad TLE lado a lado en patio de operaciones',
     copy: 'Capacidad operativa y presencia estratégica en nodos clave en Estados Unidos para garantizar el traslado final sin fricciones de tu caja seca crossborder y carga especializada.',
   },
+];
+--- fin del bloque desactivado --- */
+
+
+const pinesUsa = [
+  { nombre: 'Detroit, MI', left: '77.6%', top: '18%', lado: 'izq' },
+  { nombre: 'Kansas City, MO', left: '57.7%', top: '32.7%', lado: 'der' },
+  { nombre: 'Fremont, CA', left: '11.8%', top: '38.7%', lado: 'der' },
+  { nombre: 'Dallas, TX', left: '54.5%', top: '50.8%', lado: 'der' },
 ];
 
 const coberturaUsa = [
@@ -98,13 +108,22 @@ const modalidades = [
 ];
 
 const sectores = [
-  { icon: 'ph-car', titulo: 'Automotriz', foto: '/images/nodriza.webp', alt: 'Flotilla de nodrizas TLE para la industria automotriz',
-    copy: 'Control de tiempos crítico y trazabilidad activa para garantizar el flujo constante de insumos, previniendo paros de producción en líneas de ensamblaje.' },
-  { icon: 'ph-factory', titulo: 'Manufactura e Industria General', foto: '/images/tle-servicios-tn-02.webp', alt: 'Carga de contenedor TLE con tarimas en nave industrial',
-    copy: 'Soluciones integrales para la importación y exportación de mercancías, optimizando el abastecimiento de materias primas y distribución transfronteriza de producto terminado.' },
-  { icon: 'ph-storefront', titulo: 'Retail y Comercio Mayorista', foto: '/images/tle-servicios-ayni-01.webp', alt: 'Vista aérea de tractocamiones en los andenes de un centro de distribución',
-    copy: 'Capacidad operativa flexible para responder a picos de demanda y asegurar entregas puntuales en redes de distribución nacional e internacional.' },
+  { icon: 'ph-car', titulo: 'Automotriz',
+    copy: 'Coordinación logística con disciplina operativa para integrarse a cadenas de suministro con tiempos de entrega estrictos.' },
+  { icon: 'ph-factory', titulo: 'Manufactura e Industria',
+    copy: 'Capacidad de respuesta y continuidad en el traslado de insumos, materias primas y producto terminado entre México y Estados Unidos.' },
+  { icon: 'ph-storefront', titulo: 'Retail y Comercio Mayorista',
+    copy: 'Cumplimiento de esquemas de entrega y coordinación estratégica para el abastecimiento de centros de distribución.' },
+  { icon: 'ph-first-aid-kit', titulo: 'Farmacéutica',
+    copy: 'Cumplimiento de esquemas de entrega y coordinación estratégica para el abastecimiento de centros de distribución.' },
+  { icon: 'ph-cpu', titulo: 'High Tech, Inteligencia Artificial y Data Centers',
+    copy: 'Coordinación logística con disciplina operativa.' },
+  { icon: 'ph-warning-diamond', titulo: 'HAZMAT',
+    copy: 'Capacidad de respuesta y continuidad en el traslado de insumos, materias primas y producto terminado entre México y Estados Unidos.' },
+  { icon: 'ph-bowl-food', titulo: 'Grado Alimenticio',
+    copy: 'Unidades equipadas con monitoreo de temperatura y estricto apego a normas de inocuidad.' },
 ];
+
 
 // Sin repetir certificaciones: solo recursos operativos y tecnológicos.
 const seguridad = [
@@ -150,8 +169,8 @@ const modalidadesNombres = modalidades.map((m) => m.titulo);
       </h1>
       <p data-hero-anim class="text-gray-300 text-base sm:text-lg max-w-2xl mb-4 font-light leading-relaxed">
         Somos tu aliado integral de la cadena de suministro, gestionamos tu <strong class="font-semibold text-white">flete
-        internacional terrestre México – USA</strong> a través de una empresa de logística binacional coordinada entre
-        TLE y D-Troy. Agilizamos la <strong class="font-semibold text-white">logística para exportación México</strong> con
+        internacional terrestre México – USA</strong> a través de una empresa de logística binacional.
+        Agilizamos la <strong class="font-semibold text-white">logística para exportación México</strong> con
         pasos fronterizos en menos de 15 minutos, respaldados por máxima seguridad y trazabilidad en tiempo real.
       </p>
       <p data-hero-anim class="text-tle-primary text-sm sm:text-base font-medium max-w-2xl mb-10">
@@ -161,8 +180,8 @@ const modalidadesNombres = modalidades.map((m) => m.titulo);
         <a href="#contacto" class="bg-tle-primary text-tle-black px-8 py-4 rounded-sm font-bold hover:bg-white transition-all text-center">
           Cotiza tu operación internacional
         </a>
-        <a href="#solucion" class="border border-white/40 text-tle-white px-8 py-4 rounded-sm font-bold hover:bg-white/10 transition-all text-center">
-          Ver la solución coordinada
+        <a href="#cobertura" class="border border-white/40 text-tle-white px-8 py-4 rounded-sm font-bold hover:bg-white/10 transition-all text-center">
+          Conoce nuestra cobertura
         </a>
       </div>
     </div>
@@ -273,6 +292,10 @@ const modalidadesNombres = modalidades.map((m) => m.titulo);
   </section>
 
 
+  {/* --- Sección "Solución Coordinada" desactivada a petición del cliente.
+       Para reactivarla: quitar este comentario, el del bloque `solucion`
+       en el frontmatter y volver a poner el enlace en el menú del Layout. ---
+
   <!-- ===================== 5. SOLUCIÓN COORDINADA ===================== -->
   <section id="solucion" class="py-20 bg-tle-secondary">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -287,7 +310,7 @@ const modalidadesNombres = modalidades.map((m) => m.titulo);
       <div data-reveal-stagger class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {solucion.map((s, i) => (
           <article class="relative bg-tle-white rounded-sm border-t-2 border-tle-primary overflow-hidden flex flex-col">
-            {/* Flecha del flujo central: TLE → Cruce Coordinado → D-Troy */}
+            <!-- Flecha del flujo central: TLE -> Cruce Coordinado -> D-Troy -->
             {i < solucion.length - 1 && (
               <span class="hidden md:flex absolute top-1/2 -right-6 z-20 w-9 h-9 -translate-y-1/2 items-center justify-center rounded-full bg-tle-primary text-tle-black" aria-hidden="true">
                 <i class="ph ph-caret-right text-lg"></i>
@@ -308,6 +331,8 @@ const modalidadesNombres = modalidades.map((m) => m.titulo);
   </section>
 
 
+  --- fin de la sección desactivada --- */}
+
   <!-- ===================== 6. COBERTURA ESTRATÉGICA ===================== -->
   <section id="cobertura" class="py-24 bg-tle-black text-tle-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -319,48 +344,62 @@ const modalidadesNombres = modalidades.map((m) => m.titulo);
         </p>
       </div>
 
-      {/* La infografía va a todo lo ancho: tiene rótulos finos que no se leen a media columna. */}
-      <figure data-reveal class="m-0 max-w-5xl mx-auto">
-        <img
-          src="/images/mapa.webp"
-          alt="Mapa de presencia estratégica de ATC Group y D-Troy en América del Norte: oficinas en Monterrey, Salinas Victoria, Nuevo Laredo, Ramos Arizpe, San Luis Potosí, Silao y Salamanca; puertos de Manzanillo, Lázaro Cárdenas y Altamira; y nodos en Dallas, Fremont, Kansas City y Detroit"
-          width="1454"
-          height="780"
-          loading="lazy"
-          class="w-full h-auto rounded-sm"
-        />
-        <figcaption class="text-xs text-gray-400 mt-4 text-center">
-          Corredores, oficinas, puertos y nodos de distribución de la red binacional.
-        </figcaption>
-      </figure>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <figure data-reveal class="m-0">
+          {/* El contenedor se ajusta a la imagen para que las etiquetas caigan sobre cada bandera. */}
+          <div class="relative w-full max-w-lg mx-auto">
+            <img
+              src="/images/mapa_usa.webp"
+              alt="Mapa de América del Norte con el área de servicio de la red binacional y los nodos de Detroit, Kansas City, Fremont y Dallas"
+              width="936"
+              height="909"
+              loading="lazy"
+              class="w-full h-auto"
+            />
+            {/* Etiquetas de los nodos. Se ocultan en móvil: a ese tamaño el mapa no las admite. */}
+            {pinesUsa.map((pin) => (
+              <span
+                class={`hidden sm:block absolute z-10 -translate-y-1/2 whitespace-nowrap text-[10px] lg:text-[11px] font-semibold text-tle-white bg-black/75 border border-tle-primary/60 rounded-sm px-1.5 py-0.5 ${
+                  pin.lado === 'der' ? 'translate-x-2' : '-translate-x-full -ml-2'
+                }`}
+                style={`left:${pin.left};top:${pin.top}`}
+              >
+                {pin.nombre}
+              </span>
+            ))}
+          </div>
+          <figcaption class="text-xs text-gray-400 mt-4 text-center">
+            Área de servicio de la red binacional entre México y Estados Unidos.
+          </figcaption>
+        </figure>
 
-      {/* Resumen en texto: el mapa es imagen, esto lo deja legible y accesible. */}
-      <div data-reveal-stagger class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-14">
-        <div class="flex gap-5">
-          <div class="w-12 h-12 bg-tle-primary flex items-center justify-center rounded-sm shrink-0">
-            <i class="ph ph-map-pin text-2xl text-tle-black"></i>
+        <div data-reveal-stagger class="space-y-8">
+          <div class="flex gap-5">
+            <div class="w-12 h-12 bg-tle-primary flex items-center justify-center rounded-sm shrink-0">
+              <i class="ph ph-map-pin text-2xl text-tle-black"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-tle-primary mb-2">México — Sede ATC en Monterrey</h3>
+              <ul class="flex flex-wrap gap-2 mt-1">
+                {coberturaMx.map((punto) => (
+                  <li class="text-xs text-gray-200 bg-white/10 border border-white/15 rounded-sm px-3 py-1.5">{punto}</li>
+                ))}
+              </ul>
+            </div>
           </div>
-          <div>
-            <h3 class="text-base font-bold text-tle-primary mb-2">México — Sede ATC en Monterrey</h3>
-            <ul class="flex flex-wrap gap-2 mt-1">
-              {coberturaMx.map((punto) => (
-                <li class="text-xs text-gray-200 bg-white/10 border border-white/15 rounded-sm px-3 py-1.5">{punto}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
 
-        <div class="flex gap-5">
-          <div class="w-12 h-12 bg-tle-primary flex items-center justify-center rounded-sm shrink-0">
-            <i class="ph ph-flag text-2xl text-tle-black"></i>
-          </div>
-          <div>
-            <h3 class="text-base font-bold text-tle-primary mb-2">Estados Unidos — Nodos clave</h3>
-            <ul class="flex flex-wrap gap-2 mt-1">
-              {coberturaUsa.map((nodo) => (
-                <li class="text-xs text-gray-200 bg-white/10 border border-white/15 rounded-sm px-3 py-1.5">{nodo}</li>
-              ))}
-            </ul>
+          <div class="flex gap-5">
+            <div class="w-12 h-12 bg-tle-primary flex items-center justify-center rounded-sm shrink-0">
+              <i class="ph ph-flag text-2xl text-tle-black"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-tle-primary mb-2">Estados Unidos — Nodos clave</h3>
+              <ul class="flex flex-wrap gap-2 mt-1">
+                {coberturaUsa.map((nodo) => (
+                  <li class="text-xs text-gray-200 bg-white/10 border border-white/15 rounded-sm px-3 py-1.5">{nodo}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -452,18 +491,13 @@ const modalidadesNombres = modalidades.map((m) => m.titulo);
         </p>
       </div>
 
-      <div data-reveal-stagger class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {sectores.map((s, i) => (
-          <article class="bg-tle-secondary rounded-sm border-l-4 border-tle-primary overflow-hidden flex flex-col">
-            {s.foto
-              ? <img src={s.foto} alt={s.alt} width="730" height="456" loading="lazy" class="w-full aspect-16/10 object-cover" />
-              : <ImgPlaceholder id={`SEC-0${i + 1}`} nota={s.img} ratio="aspect-16/10" />}
-            <div class="p-7 flex flex-col grow">
-              <i class={`ph ${s.icon} text-3xl text-tle-black mb-4 block`}></i>
-              <h3 class="text-base font-bold text-tle-black mb-2">{s.titulo}</h3>
-              <p class="text-xs text-gray-600 leading-relaxed">{s.copy}</p>
-            </div>
-          </article>
+      <div data-reveal-stagger class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {sectores.map((s) => (
+          <div class="bg-tle-secondary p-7 rounded-sm border-l-4 border-tle-primary flex flex-col">
+            <i class={`ph ${s.icon} text-3xl text-tle-black mb-4 block`}></i>
+            <h3 class="text-base font-bold text-tle-black mb-2">{s.titulo}</h3>
+            <p class="text-xs text-gray-600 leading-relaxed">{s.copy}</p>
+          </div>
         ))}
       </div>
     </div>
