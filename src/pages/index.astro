@@ -140,20 +140,6 @@ const seguridad = [
     beneficioDetalle: 'Protocolos estrictos de supervisión para garantizar una alta calidad constante en cada embarque.' },
 ];
 
-const modalidadesNombres = modalidades.map((m) => m.titulo);
-
-// Opciones del formulario. El endpoint valida contra estas mismas listas.
-const tiposOperacion = [
-  'Exportación (México → EE. UU.)',
-  'Importación (EE. UU. → México)',
-  'Ambas',
-];
-const frecuencias = ['Semanal', 'Mensual'];
-
-// Mientras no llegue la clave del cliente se usa la de prueba de Cloudflare (siempre
-// aprueba), igual que en la LP Nacional: así el widget se ve desde ahora.
-const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '1x00000000000000000000AA';
-const turnstileEsPrueba = !import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
 
 <Layout
@@ -432,11 +418,6 @@ const turnstileEsPrueba = !import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
   <SeccionCotizacion
       id="cotiza"
       titulo="Cotiza tu operación transfronteriza"
-      tiposOperacion={tiposOperacion}
-      tiposServicio={modalidadesNombres}
-      frecuencias={frecuencias}
-      turnstileSiteKey={turnstileSiteKey}
-      turnstileEsPrueba={turnstileEsPrueba}
   />
 
 
@@ -593,11 +574,6 @@ const turnstileEsPrueba = !import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
   <!-- ===================== 12. COTIZACIÓN ===================== -->
   <SeccionCotizacion
       id="contacto"
-      tiposOperacion={tiposOperacion}
-      tiposServicio={modalidadesNombres}
-      frecuencias={frecuencias}
-      turnstileSiteKey={turnstileSiteKey}
-      turnstileEsPrueba={turnstileEsPrueba}
   />
 
 
@@ -606,169 +582,5 @@ const turnstileEsPrueba = !import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 
 </Layout>
 
-<script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
-
-<script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
-    const formularios = Array.from(document.querySelectorAll('form[data-cotizacion]'));
-    if (!formularios.length) return;
-
-    formularios.forEach((form) => {
-    const statusBox = form.querySelector('[data-status]');
-    const boton = form.querySelector('button[type="submit"]');
-
-    // --- Contexto del lead: ruta de la landing y marca de tiempo ---
-    form.querySelector('[name="origen"]').value = window.location.pathname + window.location.search;
-    form.querySelector('[name="formLoadedAt"]').value = String(Date.now());
-
-    // --- UTMs: se leen de la URL y se guardan por si la persona navega antes de enviar ---
-    const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid'];
-    const UTM_STORAGE_KEY = 'tle_intl_utm_params';
-    (() => {
-      const params = new URLSearchParams(window.location.search);
-      const deLaUrl = {};
-      UTM_KEYS.forEach((k) => {
-        const v = params.get(k);
-        if (v) deLaUrl[k] = v;
-      });
-
-      let utm = deLaUrl;
-      try {
-        if (Object.keys(deLaUrl).length) {
-          sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(deLaUrl));
-        } else {
-          const guardado = sessionStorage.getItem(UTM_STORAGE_KEY);
-          if (guardado) utm = JSON.parse(guardado);
-        }
-      } catch (e) {
-        /* sessionStorage bloqueado: se envía lo que haya en la URL */
-      }
-
-      UTM_KEYS.forEach((k) => {
-        const input = form.querySelector('[name="' + k + '"]');
-        if (input) input.value = utm[k] || '';
-      });
-    })();
-
-    // --- Validación ---
-    const soloTexto = /^[A-Za-zÀ-ÖØ-öø-ÿ\s.'-]{3,100}$/;
-    const REGLAS = {
-      nombre: { test: (v) => soloTexto.test(v), msg: 'Ingresa tu nombre y apellido.' },
-      empresa: { test: (v) => v.length >= 2 && v.length <= 150, msg: 'Ingresa el nombre de la empresa.' },
-      correo: { test: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v), msg: 'Ingresa un correo válido.' },
-      telefono: {
-        test: (v) => /^[0-9()+\-\s]{10,20}$/.test(v) && (v.match(/[0-9]/g) || []).length >= 10,
-        msg: 'Ingresa un teléfono válido (mínimo 10 dígitos).',
-      },
-      ciudad_origen: { test: (v) => v.length >= 3 && v.length <= 100, msg: 'Indica país y ciudad de origen.' },
-      destino: { test: (v) => v.length >= 3 && v.length <= 100, msg: 'Indica país y ciudad de destino.' },
-      operacion: { test: (v) => v !== '', msg: 'Selecciona el tipo de operación.' },
-      servicio: { test: (v) => v !== '', msg: 'Selecciona el tipo de servicio o unidad.' },
-      carga: { test: (v) => v.length >= 2 && v.length <= 150, msg: 'Indica el tipo de carga.' },
-      frecuencia: { test: (v) => v !== '', msg: 'Selecciona la frecuencia.' },
-      fecha: {
-        test: (v) => {
-          if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
-          const hoy = new Date();
-          hoy.setHours(0, 0, 0, 0);
-          const d = new Date(v + 'T00:00:00');
-          return !isNaN(d) && d >= hoy;
-        },
-        msg: 'Elige una fecha de hoy en adelante.',
-      },
-    };
-
-    const pintarError = (campo, mensaje) => {
-      const cont = campo.closest('div');
-      const p = cont ? cont.querySelector('.field-error') : null;
-      campo.classList.toggle('border-red-500', Boolean(mensaje));
-      campo.setAttribute('aria-invalid', mensaje ? 'true' : 'false');
-      if (p) {
-        p.textContent = mensaje || '';
-        p.classList.toggle('hidden', !mensaje);
-      }
-    };
-
-    const validar = (campo) => {
-      const regla = REGLAS[campo.name];
-      if (!regla) return true;
-      const valor = campo.value.trim();
-      if (!valor) {
-        pintarError(campo, 'Este campo es obligatorio.');
-        return false;
-      }
-      const ok = regla.test(valor);
-      pintarError(campo, ok ? '' : regla.msg);
-      return ok;
-    };
-
-    const avisar = (mensaje, tipo) => {
-      if (!statusBox) return;
-      statusBox.textContent = mensaje;
-      statusBox.className = 'text-sm rounded-sm px-4 py-3 ' +
-        (tipo === 'error' ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700');
-    };
-
-    const campos = Array.from(form.querySelectorAll('[name]')).filter((el) => el.name in REGLAS);
-    campos.forEach((campo) => {
-      campo.addEventListener('blur', () => validar(campo));
-      campo.addEventListener('change', () => validar(campo));
-      campo.addEventListener('input', () => {
-        if (campo.classList.contains('border-red-500')) validar(campo);
-      });
-    });
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      let valido = true;
-      let primerError = null;
-      campos.forEach((campo) => {
-        if (!validar(campo)) {
-          valido = false;
-          if (!primerError) primerError = campo;
-        }
-      });
-
-      if (!valido) {
-        avisar('Revisa los campos marcados en rojo.', 'error');
-        if (primerError) primerError.focus();
-        return;
-      }
-
-      const datos = Object.fromEntries(new FormData(form).entries());
-
-      if (boton) boton.disabled = true;
-      avisar('Enviando solicitud...', 'ok');
-
-      try {
-        const res = await fetch('/api/lead', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(datos),
-        });
-        const resultado = await res.json().catch(() => ({}));
-
-        if (!res.ok) {
-          if (resultado.errors) {
-            Object.entries(resultado.errors).forEach(([nombre, mensaje]) => {
-              const campo = form.querySelector('[name="' + nombre + '"]');
-              if (campo) pintarError(campo, mensaje);
-            });
-          }
-          avisar(resultado.error || 'No se pudo enviar la solicitud. Revisa los campos.', 'error');
-          if (window.turnstile) window.turnstile.reset();
-          return;
-        }
-
-        window.location.href = '/gracias';
-      } catch (err) {
-        avisar('Ocurrió un error de conexión. Intenta de nuevo.', 'error');
-        if (window.turnstile) window.turnstile.reset();
-      } finally {
-        if (boton) boton.disabled = false;
-      }
-    });
-    });
-  });
-</script>
+{/* Un solo script para ambas instancias del formulario del CRM (SeccionCotizacion). */}
+<script is:inline src="https://link.msgsndr.com/js/form_embed.js"></script>
