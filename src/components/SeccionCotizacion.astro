@@ -8,15 +8,11 @@
 interface Props {
   /** Ancla de la sección y sufijo del id del iframe. */
   id: string;
-  titulo?: string;
-  intro?: string;
+  titulo: string;
+  intro: string;
 }
 
-const {
-  id,
-  titulo = 'Solicita una cotización internacional',
-  intro = 'Compártenos los datos generales de tu operación internacional. El equipo revisará el requerimiento para definir la solución y el seguimiento correspondiente.',
-} = Astro.props;
+const { id, titulo, intro } = Astro.props;
 
 const CRM_FORM_ID = 'IjKoqvBNilZMS77Dw4A1';
 const iframeId = `inline-${CRM_FORM_ID}-${id}`;

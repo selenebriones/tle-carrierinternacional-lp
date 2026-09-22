@@ -1,0 +1,421 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ImgPlaceholder from './ImgPlaceholder.astro';
+import Footer from './Footer.astro';
+import SeccionCotizacion from './SeccionCotizacion.astro';
+import es from '../i18n/es.js';
+import en from '../i18n/en.js';
+
+/* ============================================================================
+   TLE — LP Carrier Internacional.
+   Misma estructura, tipografía y paleta que la LP Nacional ya autorizada.
+   Contenido parametrizado por `lang` para servir /  (es) y /en/ (en) desde
+   el mismo template, sin duplicar el markup entre ambos idiomas.
+   ========================================================================== */
+
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'es' } = Astro.props;
+const t = lang === 'en' ? en : es;
+---
+
+<Layout title={t.meta.title} description={t.meta.description} lang={lang}>
+
+  <!-- ===================== 1. HERO ===================== -->
+  <section class="relative w-full min-h-[80vh] flex items-center bg-tle-black text-tle-white overflow-hidden">
+    <div class="absolute inset-0 z-10 bg-black/70 sm:bg-transparent sm:bg-[linear-gradient(to_right,rgba(0,0,0,0.95)_0%,rgba(0,0,0,0.9)_45%,rgba(0,0,0,0.7)_72%,rgba(0,0,0,0.35)_100%)]"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10"></div>
+    <img
+      src="/images/d_troy.webp"
+      alt={t.hero.imgAlt}
+      data-parallax
+      fetchpriority="high"
+      width="1600"
+      height="1017"
+      class="absolute inset-0 w-full h-full object-cover object-[62%_center] lg:object-[64%_60%] opacity-90 z-0"
+    />
+
+    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full">
+      <span data-hero-anim class="inline-block bg-tle-primary text-tle-black text-xs font-bold uppercase tracking-[0.2em] px-3 py-1 mb-6">
+        {t.hero.badge}
+      </span>
+      <h1 data-hero-anim class="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold leading-[1.08] mb-6 max-w-4xl uppercase [text-shadow:0_2px_18px_rgba(0,0,0,0.85)]">
+        {t.hero.h1Pre}<span class="text-tle-primary">{t.hero.h1Highlight}</span>{t.hero.h1Post}
+      </h1>
+      <p data-hero-anim class="text-gray-300 text-base sm:text-lg max-w-2xl mb-4 font-light leading-relaxed">
+        {t.hero.bodyPre}<strong class="font-semibold text-white">{t.hero.bodyStrong1}</strong>{t.hero.bodyMid}<strong class="font-semibold text-white">{t.hero.bodyStrong2}</strong>{t.hero.bodyPost}
+      </p>
+      <p data-hero-anim class="text-tle-primary text-sm sm:text-base font-medium max-w-2xl mb-10">
+        {t.hero.sub}
+      </p>
+      <div data-hero-anim class="flex flex-col sm:flex-row gap-4">
+        <a href="#contacto" class="bg-tle-primary text-tle-black px-8 py-4 rounded-sm font-bold hover:bg-white transition-all text-center">
+          {t.hero.cta1}
+        </a>
+        <a href="#cobertura" class="border border-white/40 text-tle-white px-8 py-4 rounded-sm font-bold hover:bg-white/10 transition-all text-center">
+          {t.hero.cta2}
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 2. CERTIFICACIONES ===================== -->
+  <section class="bg-tle-white py-16 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 data-reveal class="text-center text-2xl sm:text-3xl font-display font-bold text-tle-black mb-12 uppercase tracking-wide">
+        {t.certificaciones.heading}
+      </h2>
+      <div data-reveal-stagger class="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-4xl mx-auto text-center">
+        {t.certificaciones.items.map((c) => (
+          <div class="flex flex-col items-center">
+            <div class="h-24 flex items-center justify-center mb-4">
+              <img src={c.img} alt={c.nombre} width="240" height="240" loading="lazy" class={`${c.alto} w-auto object-contain`} />
+            </div>
+            <span class="text-sm font-bold text-tle-black">{c.nombre}</span>
+            <p class="text-xs text-gray-600 leading-relaxed mt-2 max-w-xs">{c.copy}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 3. RESPALDO INSTITUCIONAL Y RED BINACIONAL ===================== -->
+  <section class="relative py-20 bg-tle-secondary overflow-hidden">
+    {/* Fondo: la flotilla en escala de grises, muy tenue para no competir con el texto. */}
+    <img
+      src="/images/bg_todos_camiones.webp"
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      width="1400"
+      height="664"
+      class="absolute inset-0 w-full h-full object-cover grayscale opacity-18 pointer-events-none select-none"
+    />
+    {/* Vela clara: mantiene el contraste del texto por encima de la fotografía. */}
+    <div class="absolute inset-0 bg-tle-secondary/35" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-14">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">
+          {t.respaldo.heading}
+        </h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+      </div>
+
+      <div data-reveal-stagger class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-300">
+        {t.respaldo.items.map((item) => (
+          <div class="px-8 py-8 md:py-2 text-center flex flex-col items-center">
+            <div class="w-16 h-16 bg-tle-primary flex items-center justify-center rounded-sm mb-5">
+              <i class={`ph ${item.icon} text-3xl text-tle-black`}></i>
+            </div>
+            <h3 class="text-base font-bold text-tle-black mb-3">{item.titulo}</h3>
+            <p class="text-sm text-gray-600 leading-relaxed max-w-xs">{item.copy}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 4. INTEGRACIÓN LOGÍSTICA ===================== -->
+  <section class="py-20 bg-tle-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-14">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">{t.integracion.heading}</h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+        <p class="text-sm text-gray-600 max-w-3xl mx-auto mt-6 leading-relaxed">
+          {t.integracion.intro}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
+        <h3 data-reveal class="text-lg font-bold text-gray-500 pb-4 border-b-2 border-gray-200">
+          {t.integracion.colRetos}
+        </h3>
+        <h3 data-reveal class="text-lg font-bold text-tle-black pb-4 border-b-2 border-tle-primary">
+          {t.integracion.colSolucion}
+        </h3>
+      </div>
+
+      <div class="mt-8 space-y-6">
+        {t.integracion.pares.map((par) => (
+          <div data-reveal-stagger class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-stretch">
+            <div class="flex gap-4 bg-tle-secondary p-6 rounded-sm">
+              <i class="ph ph-x-circle text-2xl text-gray-400 shrink-0"></i>
+              <p class="text-sm text-gray-600 leading-relaxed">{par.dolor}</p>
+            </div>
+            <div class="flex gap-4 bg-tle-secondary p-6 rounded-sm border-l-4 border-tle-primary">
+              <i class="ph ph-check-circle text-2xl text-tle-accent shrink-0"></i>
+              <p class="text-sm font-medium text-tle-black leading-relaxed">{par.solucion}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div data-reveal class="text-center mt-14">
+        <a href="#contacto" class="inline-flex items-center gap-2 bg-tle-black text-tle-white px-8 py-4 rounded-sm font-bold text-sm hover:bg-tle-primary hover:text-tle-black transition-colors">
+          {t.integracion.cta} <i class="ph ph-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  {/* --- Sección "Solución Coordinada" desactivada a petición del cliente.
+       Para reactivarla: quitar este comentario, el del bloque `solucion`
+       en el frontmatter y volver a poner el enlace en el menú del Layout. --- */}
+
+
+  <!-- ===================== 6. COBERTURA ESTRATÉGICA ===================== -->
+  <section id="cobertura" class="py-24 bg-tle-black text-tle-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-14">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold uppercase tracking-wide">{t.cobertura.heading}</h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+        <p class="text-tle-primary text-base font-medium max-w-3xl mx-auto mt-6">
+          {t.cobertura.sub}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <figure data-reveal class="m-0">
+          {/* El contenedor se ajusta a la imagen para que las etiquetas caigan sobre cada bandera. */}
+          <div class="relative w-full max-w-lg mx-auto">
+            <img
+              src="/images/mapa_usa.webp"
+              alt={t.cobertura.mapaAlt}
+              width="936"
+              height="909"
+              loading="lazy"
+              class="w-full h-auto"
+            />
+            {/* Etiquetas de los nodos. Se ocultan en móvil: a ese tamaño el mapa no las admite. */}
+            {t.pinesUsa.map((pin) => (
+              <span
+                class={`hidden sm:block absolute z-10 -translate-y-1/2 whitespace-nowrap text-[10px] lg:text-[11px] font-semibold text-tle-white bg-black/75 border border-tle-primary/60 rounded-sm px-1.5 py-0.5 ${
+                  pin.lado === 'der' ? 'translate-x-2' : '-translate-x-full -ml-2'
+                }`}
+                style={`left:${pin.left};top:${pin.top}`}
+              >
+                {pin.nombre}
+              </span>
+            ))}
+          </div>
+          <figcaption class="text-xs text-gray-400 mt-4 text-center">
+            {t.cobertura.figcaption}
+          </figcaption>
+        </figure>
+
+        <div data-reveal-stagger class="space-y-8">
+          <div class="flex gap-5">
+            <div class="w-12 h-12 bg-tle-primary flex items-center justify-center rounded-sm shrink-0">
+              <i class="ph ph-map-pin text-2xl text-tle-black"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-tle-primary mb-2">{t.cobertura.mexicoHeading}</h3>
+              <ul class="flex flex-wrap gap-2 mt-1">
+                {t.coberturaMx.map((punto) => (
+                  <li class="text-xs text-gray-200 bg-white/10 border border-white/15 rounded-sm px-3 py-1.5">{punto}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div class="flex gap-5">
+            <div class="w-12 h-12 bg-tle-primary flex items-center justify-center rounded-sm shrink-0">
+              <i class="ph ph-flag text-2xl text-tle-black"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-tle-primary mb-2">{t.cobertura.usaHeading}</h3>
+              <ul class="flex flex-wrap gap-2 mt-1">
+                {t.coberturaUsa.map((nodo) => (
+                  <li class="text-xs text-gray-200 bg-white/10 border border-white/15 rounded-sm px-3 py-1.5">{nodo}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div data-reveal class="text-center mt-14">
+        <a href="#contacto" class="inline-flex items-center gap-2 bg-tle-primary text-tle-black px-8 py-4 rounded-sm font-bold text-sm hover:bg-white transition-colors">
+          {t.cobertura.cta} <i class="ph ph-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ COTIZACIÓN (copia tras Cobertura) ============ -->
+  <SeccionCotizacion
+      id="cotiza"
+      titulo={t.cotizacion.trasCoberturaTitulo}
+      intro={t.cotizacion.defaultIntro}
+  />
+
+
+  <!-- ===================== 7. PROCESO OPERATIVO ===================== -->
+  <section id="proceso" class="py-20 bg-tle-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-16">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">{t.proceso.heading}</h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+        <p class="text-sm text-gray-600 max-w-3xl mx-auto mt-6 leading-relaxed">
+          {t.proceso.sub}
+        </p>
+      </div>
+
+      <div data-reveal-stagger class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-4">
+        {t.proceso.items.map((p, i) => (
+          <div class="relative flex flex-col items-center text-center px-2">
+            <div class="w-24 h-24 rounded-full bg-tle-primary text-tle-black font-display font-extrabold text-3xl flex items-center justify-center mb-6 relative z-10">
+              {p.n}
+            </div>
+            {/* Conector hacia el siguiente paso: solo entre tarjetas de la misma fila */}
+            {i < t.proceso.items.length - 1 && (
+              <span class="hidden lg:block absolute top-12 left-1/2 w-full h-px bg-gray-300 z-0" aria-hidden="true">
+                <i class="ph ph-caret-right absolute -right-1 -top-2.5 text-gray-400 text-sm"></i>
+              </span>
+            )}
+            <h3 class="text-base font-bold text-tle-black mb-3">{p.titulo}</h3>
+            <p class="text-xs text-gray-600 leading-relaxed">{p.copy}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 8. MODALIDADES Y CARGAS ===================== -->
+  <section id="modalidades" class="py-20 bg-tle-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-14">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">{t.modalidades.heading}</h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+        <p class="text-sm text-gray-600 max-w-3xl mx-auto mt-6 leading-relaxed">
+          {t.modalidades.sub}
+        </p>
+      </div>
+
+      <div data-reveal-stagger class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {t.modalidades.items.map((m, i) => (
+          <article class="bg-tle-white rounded-sm border-t-2 border-tle-primary overflow-hidden flex flex-col">
+            {m.foto
+              ? <img src={m.foto} alt={m.alt} width="700" height="525" loading="lazy" class="w-full aspect-4/3 object-cover" />
+              : <ImgPlaceholder id={`MOD-0${i + 1}`} nota={m.img} ratio="aspect-4/3" />}
+            <div class="p-6 flex flex-col grow">
+              <i class={`ph ${m.icon} text-3xl text-tle-accent mb-4 block`}></i>
+              <h3 class="text-sm font-bold text-tle-black mb-3">{m.titulo}</h3>
+              <p class="text-xs text-gray-600 leading-relaxed">{m.copy}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div data-reveal class="text-center mt-14">
+        <a href="#contacto" class="inline-flex items-center gap-2 bg-tle-primary text-tle-black px-8 py-4 rounded-sm font-bold text-sm hover:bg-tle-black hover:text-tle-white transition-colors">
+          {t.modalidades.cta} <i class="ph ph-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 9. SECTORES ATENDIDOS ===================== -->
+  <section id="sectores" class="py-20 bg-tle-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-14">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">{t.sectores.heading}</h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+        <p class="text-sm text-gray-600 max-w-3xl mx-auto mt-6 leading-relaxed">
+          {t.sectores.sub}
+        </p>
+      </div>
+
+      <div data-reveal-stagger class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {t.sectores.items.map((s) => (
+          <div class="bg-tle-secondary p-7 rounded-sm border-l-4 border-tle-primary flex flex-col">
+            <i class={`ph ${s.icon} text-3xl text-tle-black mb-4 block`}></i>
+            <h3 class="text-base font-bold text-tle-black mb-2">{s.titulo}</h3>
+            <p class="text-xs text-gray-600 leading-relaxed">{s.copy}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 10. SEGURIDAD, CUMPLIMIENTO Y TRAZABILIDAD ===================== -->
+  <section class="py-20 bg-tle-secondary border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-14">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">
+          {t.seguridad.heading}
+        </h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+        <p class="text-sm text-gray-600 max-w-3xl mx-auto mt-6 leading-relaxed">
+          {t.seguridad.sub}
+        </p>
+      </div>
+
+      <div data-reveal class="bg-tle-white rounded-sm overflow-hidden border border-gray-200">
+        <div class="hidden sm:grid grid-cols-2 bg-tle-black text-tle-white text-xs font-bold uppercase tracking-widest">
+          <div class="px-6 py-4">{t.seguridad.colRecurso}</div>
+          <div class="px-6 py-4 border-l border-gray-800">{t.seguridad.colBeneficio}</div>
+        </div>
+        {t.seguridad.items.map((row, i) => (
+          <div class={`grid grid-cols-1 sm:grid-cols-2 ${i % 2 === 1 ? 'bg-tle-secondary' : 'bg-tle-white'} ${i > 0 ? 'border-t border-gray-200' : ''}`}>
+            <div class="px-6 py-5 flex items-center">
+              <p class="text-sm font-bold text-tle-black">{row.recurso}</p>
+            </div>
+            <div class="px-6 py-5 sm:border-l border-gray-200 border-t sm:border-t-0">
+              <p class="text-sm font-bold text-tle-accent">{row.beneficio}</p>
+              <p class="text-xs text-gray-600 mt-1">{row.beneficioDetalle}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 11. RESPALDO INSTITUCIONAL ===================== -->
+  <section class="py-20 bg-tle-white border-y border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div data-reveal class="text-center mb-12">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-tle-black uppercase tracking-wide">{t.testimonio.heading}</h2>
+        <div class="w-16 h-1 bg-tle-primary mx-auto mt-4"></div>
+      </div>
+
+      <blockquote data-reveal class="max-w-3xl mx-auto text-center">
+        <i class="ph ph-quotes text-4xl text-tle-primary mb-4 block"></i>
+        <p class="text-base text-gray-700 leading-relaxed italic">
+          {t.testimonio.quote}
+        </p>
+        <footer class="text-sm font-bold text-tle-black mt-6">
+          {t.testimonio.footer}
+        </footer>
+      </blockquote>
+    </div>
+  </section>
+
+
+  <!-- ===================== 12. COTIZACIÓN ===================== -->
+  <SeccionCotizacion
+      id="contacto"
+      titulo={t.cotizacion.defaultTitulo}
+      intro={t.cotizacion.defaultIntro}
+  />
+
+
+  <!-- ===================== 13. CIERRE ===================== -->
+  <Footer lang={lang} />
+
+</Layout>
+
+{/* Un solo script para ambas instancias del formulario del CRM (SeccionCotizacion). */}
+<script is:inline src="https://link.msgsndr.com/js/form_embed.js"></script>

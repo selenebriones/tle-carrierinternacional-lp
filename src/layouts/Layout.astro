@@ -4,23 +4,73 @@ import '../styles/global.css';
 interface Props {
 	title: string;
 	description: string;
+	lang?: 'es' | 'en';
 }
 
-const { title, description } = Astro.props;
+const { title, description, lang = 'es' } = Astro.props;
 
-// Desde /gracias las anclas deben apuntar a la home; dentro de la home se quedan locales
-// para no recargar la página en cada clic del menú.
-const base = Astro.url.pathname === '/' ? '' : '/';
+const NAV = {
+	es: {
+		cobertura: 'Cobertura',
+		proceso: 'Proceso',
+		modalidades: 'Modalidades',
+		sectores: 'Sectores',
+		cotizar: 'Cotizar Internacional',
+		logoAlt: 'TLE',
+		homeAria: 'TLE — inicio',
+		switchLabel: 'EN',
+		switchAria: 'Switch to English',
+	},
+	en: {
+		cobertura: 'Coverage',
+		proceso: 'Process',
+		modalidades: 'Equipment & Freight',
+		sectores: 'Industries',
+		cotizar: 'Get an International Quote',
+		logoAlt: 'TLE',
+		homeAria: 'TLE — home',
+		switchLabel: 'ES',
+		switchAria: 'Cambiar a español',
+	},
+} as const;
+
+const t = NAV[lang];
+
+// Desde /gracias las anclas deben apuntar a la home de su propio idioma; dentro
+// de la home se quedan locales para no recargar la página en cada clic del menú.
+const homePath = lang === 'en' ? '/en/' : '/';
+const isHome =
+	lang === 'en'
+		? Astro.url.pathname === '/en' || Astro.url.pathname === '/en/'
+		: Astro.url.pathname === '/';
+const base = isHome ? '' : homePath;
+
+// Ruta equivalente en el otro idioma, para el switcher y las etiquetas hreflang.
+const altPath =
+	lang === 'en'
+		? Astro.url.pathname.replace(/^\/en\/?/, '/') || '/'
+		: Astro.url.pathname === '/'
+			? '/en/'
+			: `/en${Astro.url.pathname}`;
+const esPath = lang === 'es' ? Astro.url.pathname : altPath;
+const enPath = lang === 'en' ? Astro.url.pathname : altPath;
 ---
 
 <!doctype html>
-<html lang="es" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
+		<!-- TODO: cuando se confirme el dominio final, poner `site` en astro.config.mjs
+		     y usar new URL(esPath, Astro.site) para que estas etiquetas sean absolutas
+		     (recomendado por Google para hreflang). Por ahora van relativas para no
+		     emitir localhost en el build de producción. -->
+		<link rel="alternate" hreflang="es" href={esPath} />
+		<link rel="alternate" hreflang="en" href={enPath} />
+		<link rel="alternate" hreflang="x-default" href={esPath} />
 
 		<!-- Activa las animaciones solo si hay JS y el usuario no pidió reducir movimiento.
 		     Va inline y en el <head> para que corra antes del primer paint (evita flash). -->
@@ -56,21 +106,30 @@ const base = Astro.url.pathname === '/' ? '' : '/';
 			id="main-header"
 		>
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between transition-all duration-300">
-				<a href="/" class="shrink-0" aria-label="TLE — inicio">
-					<img src="/images/tle-logo.webp" alt="TLE" width="350" height="150" class="h-11 w-auto" />
+				<a href={homePath} class="shrink-0" aria-label={t.homeAria}>
+					<img src="/images/tle-logo.webp" alt={t.logoAlt} width="350" height="150" class="h-11 w-auto" />
 				</a>
-				<nav class="hidden md:flex gap-8">
-					<a href={`${base}#cobertura`} class="text-sm font-medium hover:text-tle-primary transition-colors">Cobertura</a>
-					<a href={`${base}#proceso`} class="text-sm font-medium hover:text-tle-primary transition-colors">Proceso</a>
-					<a href={`${base}#modalidades`} class="text-sm font-medium hover:text-tle-primary transition-colors">Modalidades</a>
-					<a href={`${base}#sectores`} class="text-sm font-medium hover:text-tle-primary transition-colors">Sectores</a>
+				<nav class="hidden md:flex gap-8 items-center">
+					<a href={`${base}#cobertura`} class="text-sm font-medium hover:text-tle-primary transition-colors">{t.cobertura}</a>
+					<a href={`${base}#proceso`} class="text-sm font-medium hover:text-tle-primary transition-colors">{t.proceso}</a>
+					<a href={`${base}#modalidades`} class="text-sm font-medium hover:text-tle-primary transition-colors">{t.modalidades}</a>
+					<a href={`${base}#sectores`} class="text-sm font-medium hover:text-tle-primary transition-colors">{t.sectores}</a>
 				</nav>
-				<a
-					href={`${base}#contacto`}
-					class="bg-tle-primary text-tle-black px-6 py-2.5 rounded-sm font-semibold text-sm hover:bg-tle-accent transition-colors"
-				>
-					Cotizar Internacional
-				</a>
+				<div class="flex items-center gap-3">
+					<a
+						href={altPath}
+						aria-label={t.switchAria}
+						class="text-sm font-semibold text-gray-400 hover:text-tle-primary transition-colors border border-gray-300 rounded-sm px-2 py-1"
+					>
+						{t.switchLabel}
+					</a>
+					<a
+						href={`${base}#contacto`}
+						class="bg-tle-primary text-tle-black px-6 py-2.5 rounded-sm font-semibold text-sm hover:bg-tle-accent transition-colors"
+					>
+						{t.cotizar}
+					</a>
+				</div>
 			</div>
 		</header>
 
