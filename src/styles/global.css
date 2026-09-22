@@ -11,6 +11,7 @@
   /* Tipografías Modernas de Google Fonts */
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Syne', sans-serif;
+  --font-hero: 'Archivo', sans-serif;
 }
 
 @layer base {
