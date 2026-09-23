@@ -4,17 +4,23 @@
    `data-form-id` identifica al formulario real y debe ser igual en todas las
    instancias; el id del iframe en cambio debe ser único por instancia, porque
    el auto-resize del widget hace el handshake por ese id (dos iframes con el
-   mismo id se pisarían el uno al otro). Se deriva del `id` de la sección. */
+   mismo id se pisarían el uno al otro). Se deriva del `id` de la sección.
+   Cada idioma tiene su propio formulario en el CRM (etiquetas traducidas allá). */
 interface Props {
   /** Ancla de la sección y sufijo del id del iframe. */
   id: string;
   titulo: string;
   intro: string;
+  lang?: 'es' | 'en';
 }
 
-const { id, titulo, intro } = Astro.props;
+const { id, titulo, intro, lang = 'es' } = Astro.props;
 
-const CRM_FORM_ID = 'IjKoqvBNilZMS77Dw4A1';
+const CRM_FORMS = {
+  es: { id: 'IjKoqvBNilZMS77Dw4A1', name: 'Form_Landing TLE' },
+  en: { id: 'Bo4A65ufceEQf2GV0liY', name: 'Form_Landing TLE - EN' },
+};
+const { id: CRM_FORM_ID, name: CRM_FORM_NAME } = CRM_FORMS[lang];
 const iframeId = `inline-${CRM_FORM_ID}-${id}`;
 ---
 
@@ -49,13 +55,13 @@ const iframeId = `inline-${CRM_FORM_ID}-${id}`;
           data-activation-value=""
           data-deactivation-type="neverDeactivate"
           data-deactivation-value=""
-          data-form-name="Form_Landing TLE"
+          data-form-name={CRM_FORM_NAME}
           data-height="884"
           data-layout-iframe-id={iframeId}
           data-form-id={CRM_FORM_ID}
           data-cookie-consent="true"
           data-cookie-consent-provider="auto"
-          title="Form_Landing TLE"
+          title={CRM_FORM_NAME}
         ></iframe>
       </div>
     </div>
