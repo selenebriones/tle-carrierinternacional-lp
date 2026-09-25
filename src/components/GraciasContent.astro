@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Footer from './Footer.astro';
 import es from '../i18n/es.js';
 import en from '../i18n/en.js';
+import { withBase } from '../lib/url.js';
 
 interface Props {
   lang?: 'es' | 'en';
@@ -20,7 +21,7 @@ const t = (lang === 'en' ? en : es).gracias;
     {/* Mismo tratamiento que las secciones claras de la landing: la foto en escala
         de grises, muy tenue, bajo una vela clara. */}
     <img
-      src="/images/bg_contacto.webp"
+      src={withBase('/images/bg_contacto.webp')}
       alt=""
       aria-hidden="true"
       width="1400"
@@ -54,7 +55,7 @@ const t = (lang === 'en' ? en : es).gracias;
       </p>
 
       <a
-        href={lang === 'en' ? '/en/' : '/'}
+        href={withBase(lang === 'en' ? '/en/' : '/')}
         class="inline-block bg-tle-black text-tle-white px-8 py-4 rounded-sm font-bold hover:bg-tle-primary hover:text-tle-black transition-colors"
       >
         {t.cta}

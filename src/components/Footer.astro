@@ -4,6 +4,7 @@
    donde la persona acaba de enviar su solicitud). */
 import es from '../i18n/es.js';
 import en from '../i18n/en.js';
+import { withBase } from '../lib/url.js';
 
 interface Props {
   cierre?: boolean;
@@ -17,7 +18,7 @@ const t = (lang === 'en' ? en : es).footer;
 <footer class="bg-tle-black text-tle-white py-16">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <img
-      src="/images/tle-logo-footer.png"
+      src={withBase('/images/tle-logo-footer.png')}
       alt="TLE"
       width="140"
       height="80"

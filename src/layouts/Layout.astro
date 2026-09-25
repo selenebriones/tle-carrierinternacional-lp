@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { withBase, stripBase } from '../lib/url.js';
 
 interface Props {
 	title: string;
@@ -38,22 +39,31 @@ const t = NAV[lang];
 
 // Desde /gracias las anclas deben apuntar a la home de su propio idioma; dentro
 // de la home se quedan locales para no recargar la página en cada clic del menú.
-const homePath = lang === 'en' ? '/en/' : '/';
+// Las rutas se calculan sin el `base` (subdirectorio en cPanel) y se le anteponen
+// al final con withBase().
+const pathname = stripBase(Astro.url.pathname);
+const homePath = withBase(lang === 'en' ? '/en/' : '/');
 const isHome =
 	lang === 'en'
-		? Astro.url.pathname === '/en' || Astro.url.pathname === '/en/'
-		: Astro.url.pathname === '/';
+		? pathname === '/en' || pathname === '/en/'
+		: pathname === '/';
 const base = isHome ? '' : homePath;
 
 // Ruta equivalente en el otro idioma, para el switcher y las etiquetas hreflang.
-const altPath =
+const altPath = withBase(
 	lang === 'en'
-		? Astro.url.pathname.replace(/^\/en\/?/, '/') || '/'
-		: Astro.url.pathname === '/'
+		? pathname.replace(/^\/en\/?/, '/') || '/'
+		: pathname === '/'
 			? '/en/'
-			: `/en${Astro.url.pathname}`;
-const esPath = lang === 'es' ? Astro.url.pathname : altPath;
-const enPath = lang === 'en' ? Astro.url.pathname : altPath;
+			: `/en${pathname}`
+);
+const esPath = lang === 'es' ? withBase(pathname) : altPath;
+const enPath = lang === 'en' ? withBase(pathname) : altPath;
+
+// Google recomienda URLs absolutas en canonical y hreflang; solo se pueden armar
+// cuando hay `site` (build de cPanel). Sin él se quedan relativas.
+const abs = (path: string) => (Astro.site ? new URL(path, Astro.site).href : path);
+const canonical = abs(withBase(pathname));
 ---
 
 <!doctype html>
@@ -62,15 +72,12 @@ const enPath = lang === 'en' ? Astro.url.pathname : altPath;
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
 		<meta name="generator" content={Astro.generator} />
-		<!-- TODO: cuando se confirme el dominio final, poner `site` en astro.config.mjs
-		     y usar new URL(esPath, Astro.site) para que estas etiquetas sean absolutas
-		     (recomendado por Google para hreflang). Por ahora van relativas para no
-		     emitir localhost en el build de producción. -->
-		<link rel="alternate" hreflang="es" href={esPath} />
-		<link rel="alternate" hreflang="en" href={enPath} />
-		<link rel="alternate" hreflang="x-default" href={esPath} />
+		<link rel="canonical" href={canonical} />
+		<link rel="alternate" hreflang="es" href={abs(esPath)} />
+		<link rel="alternate" hreflang="en" href={abs(enPath)} />
+		<link rel="alternate" hreflang="x-default" href={abs(esPath)} />
 
 		<!-- Activa las animaciones solo si hay JS y el usuario no pidió reducir movimiento.
 		     Va inline y en el <head> para que corra antes del primer paint (evita flash). -->
@@ -107,7 +114,7 @@ const enPath = lang === 'en' ? Astro.url.pathname : altPath;
 		>
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between transition-all duration-300">
 				<a href={homePath} class="shrink-0" aria-label={t.homeAria}>
-					<img src="/images/tle-logo.webp" alt={t.logoAlt} width="350" height="150" class="h-11 w-auto" />
+					<img src={withBase('/images/tle-logo.webp')} alt={t.logoAlt} width="350" height="150" class="h-11 w-auto" />
 				</a>
 				<nav class="hidden md:flex gap-8 items-center">
 					<a href={`${base}#cobertura`} class="text-sm font-medium hover:text-tle-primary transition-colors">{t.cobertura}</a>

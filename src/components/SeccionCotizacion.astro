@@ -14,6 +14,8 @@ interface Props {
   lang?: 'es' | 'en';
 }
 
+import { withBase } from '../lib/url.js';
+
 const { id, titulo, intro, lang = 'es' } = Astro.props;
 
 const CRM_FORMS = {
@@ -27,7 +29,7 @@ const iframeId = `inline-${CRM_FORM_ID}-${id}`;
   <section id={id} class="relative py-24 bg-tle-primary overflow-hidden">
     {/* Fondo: la flotilla en escala de grises, tenue bajo una capa del amarillo TLE. */}
     <img
-      src="/images/bg_contacto.webp"
+      src={withBase('/images/bg_contacto.webp')}
       alt=""
       aria-hidden="true"
       loading="lazy"

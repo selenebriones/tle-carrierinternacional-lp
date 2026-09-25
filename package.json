@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:cpanel": "DEPLOY_TARGET=cpanel astro build && cp deploy/cpanel/.htaccess dist-cpanel/",
     "preview": "astro preview",
     "astro": "astro"
   },

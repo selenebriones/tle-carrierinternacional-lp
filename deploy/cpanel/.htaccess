@@ -1,0 +1,22 @@
+# Landing TLE Carrier Internacional, publicada en /carrier-international/.
+# Se copia a dist-cpanel/ con `npm run build:cpanel`; sube todo ese directorio.
+
+DirectoryIndex index.html
+Options -Indexes
+
+# Assets de Astro: el nombre lleva hash, se pueden cachear para siempre.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(webp|png|jpg|jpeg|svg|ico)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript image/svg+xml
+</IfModule>

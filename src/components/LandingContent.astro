@@ -5,6 +5,7 @@ import Footer from './Footer.astro';
 import SeccionCotizacion from './SeccionCotizacion.astro';
 import es from '../i18n/es.js';
 import en from '../i18n/en.js';
+import { withBase } from '../lib/url.js';
 
 /* ============================================================================
    TLE — LP Carrier Internacional.
@@ -28,7 +29,7 @@ const t = lang === 'en' ? en : es;
     <div class="absolute inset-0 z-10 bg-black/70 sm:bg-transparent sm:bg-[linear-gradient(to_right,rgba(0,0,0,0.95)_0%,rgba(0,0,0,0.9)_45%,rgba(0,0,0,0.7)_72%,rgba(0,0,0,0.35)_100%)]"></div>
     <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10"></div>
     <img
-      src="/images/d_troy.webp"
+      src={withBase('/images/d_troy.webp')}
       alt={t.hero.imgAlt}
       data-parallax
       fetchpriority="high"
@@ -72,7 +73,7 @@ const t = lang === 'en' ? en : es;
         {t.certificaciones.items.map((c) => (
           <div class="flex flex-col items-center">
             <div class="h-24 flex items-center justify-center mb-4">
-              <img src={c.img} alt={c.nombre} width="240" height="240" loading="lazy" class={`${c.alto} w-auto object-contain`} />
+              <img src={withBase(c.img)} alt={c.nombre} width="240" height="240" loading="lazy" class={`${c.alto} w-auto object-contain`} />
             </div>
             <span class="text-sm font-bold text-tle-black">{c.nombre}</span>
             <p class="text-xs text-gray-600 leading-relaxed mt-2 max-w-xs">{c.copy}</p>
@@ -87,7 +88,7 @@ const t = lang === 'en' ? en : es;
   <section class="relative py-20 bg-tle-secondary overflow-hidden">
     {/* Fondo: la flotilla en escala de grises, muy tenue para no competir con el texto. */}
     <img
-      src="/images/bg_todos_camiones.webp"
+      src={withBase('/images/bg_todos_camiones.webp')}
       alt=""
       aria-hidden="true"
       loading="lazy"
@@ -186,7 +187,7 @@ const t = lang === 'en' ? en : es;
           {/* El contenedor se ajusta a la imagen para que las etiquetas caigan sobre cada bandera. */}
           <div class="relative w-full max-w-lg mx-auto">
             <img
-              src="/images/mapa_usa.webp"
+              src={withBase('/images/mapa_usa.webp')}
               alt={t.cobertura.mapaAlt}
               width="936"
               height="909"
@@ -306,7 +307,7 @@ const t = lang === 'en' ? en : es;
         {t.modalidades.items.map((m, i) => (
           <article class="bg-tle-white rounded-sm border-t-2 border-tle-primary overflow-hidden flex flex-col">
             {m.foto
-              ? <img src={m.foto} alt={m.alt} width="700" height="525" loading="lazy" class="w-full aspect-4/3 object-cover" />
+              ? <img src={withBase(m.foto)} alt={m.alt} width="700" height="525" loading="lazy" class="w-full aspect-4/3 object-cover" />
               : <ImgPlaceholder id={`MOD-0${i + 1}`} nota={m.img} ratio="aspect-4/3" />}
             <div class="p-6 flex flex-col grow">
               <i class={`ph ${m.icon} text-3xl text-tle-accent mb-4 block`}></i>
